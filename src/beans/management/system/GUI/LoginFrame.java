@@ -193,7 +193,9 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
-        loginAction();
+        //loginAction();
+        new ManagerDashboardFrame().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     /**

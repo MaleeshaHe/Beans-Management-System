@@ -4,7 +4,10 @@
  */
 package beans.management.system.GUI;
 
+import beans.management.system.Model.User;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import utils.SessionManager;
 
 /**
  *
@@ -22,7 +25,17 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
         cardLayout = new java.awt.CardLayout();
         contentPanel.setLayout(cardLayout);
         loadForm(new ViewSalesReports());
+        
+        // Check if user is logged in, otherwise redirect to login screen
+        if (!SessionManager.isLoggedIn()) {
+            JOptionPane.showMessageDialog(this, "You must log in first.");
+            new LoginFrame().setVisible(true);
+            this.dispose(); // Close the current frame
+            return;
+        }
 
+        // Get the current user session
+        User currentUser = SessionManager.getCurrentUser();
     }
 
     /**
@@ -39,7 +52,7 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
         viewSalesReportsButton = new javax.swing.JButton();
         manageEmployeesButton = new javax.swing.JButton();
         promotionButton = new javax.swing.JButton();
-        promotionButton1 = new javax.swing.JButton();
+        logOutButton = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -89,14 +102,14 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        promotionButton1.setBackground(new java.awt.Color(77, 46, 10));
-        promotionButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        promotionButton1.setForeground(new java.awt.Color(255, 255, 255));
-        promotionButton1.setText("Log Out");
-        promotionButton1.setMaximumSize(new java.awt.Dimension(160, 35));
-        promotionButton1.addActionListener(new java.awt.event.ActionListener() {
+        logOutButton.setBackground(new java.awt.Color(77, 46, 10));
+        logOutButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        logOutButton.setForeground(new java.awt.Color(255, 255, 255));
+        logOutButton.setText("Log Out");
+        logOutButton.setMaximumSize(new java.awt.Dimension(160, 35));
+        logOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                promotionButton1ActionPerformed(evt);
+                logOutButtonActionPerformed(evt);
             }
         });
 
@@ -111,7 +124,7 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
                     .addComponent(promotionButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(manageEmployeesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(promotionButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(logOutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(186, 186, 186))
         );
         navPanelLayout.setVerticalGroup(
@@ -126,7 +139,7 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(promotionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
-                .addComponent(promotionButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
 
@@ -161,9 +174,13 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
         loadForm(new ManageEmployees());
     }//GEN-LAST:event_manageEmployeesButtonActionPerformed
 
-    private void promotionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_promotionButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_promotionButton1ActionPerformed
+    private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
+        // Clear the session and redirect to login screen
+        SessionManager.logout();
+        JOptionPane.showMessageDialog(this, "You have been logged out.");
+        new LoginFrame().setVisible(true);  // Show login screen
+        this.dispose();  // Close the current frame (ManagerDashboardFrame)
+    }//GEN-LAST:event_logOutButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -202,11 +219,11 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contentPanel;
+    private javax.swing.JButton logOutButton;
     private javax.swing.JLabel logo;
     private javax.swing.JButton manageEmployeesButton;
     private javax.swing.JPanel navPanel;
     private javax.swing.JButton promotionButton;
-    private javax.swing.JButton promotionButton1;
     private javax.swing.JButton viewSalesReportsButton;
     // End of variables declaration//GEN-END:variables
 }

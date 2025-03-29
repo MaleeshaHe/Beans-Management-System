@@ -56,7 +56,7 @@
                       <Component id="promotionButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="manageEmployeesButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="logo" alignment="0" max="32767" attributes="0"/>
-                      <Component id="promotionButton1" alignment="0" max="32767" attributes="0"/>
+                      <Component id="logOutButton" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="186" max="-2" attributes="0"/>
               </Group>
@@ -74,7 +74,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="promotionButton" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace pref="147" max="32767" attributes="0"/>
-                  <Component id="promotionButton1" min="-2" pref="35" max="-2" attributes="0"/>
+                  <Component id="logOutButton" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -155,7 +155,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="promotionButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="promotionButton1">
+        <Component class="javax.swing.JButton" name="logOutButton">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="a" green="2e" red="4d" type="rgb"/>
@@ -172,7 +172,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="promotionButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="logOutButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

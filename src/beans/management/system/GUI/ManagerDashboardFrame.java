@@ -94,7 +94,7 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
         promotionButton.setBackground(new java.awt.Color(77, 46, 10));
         promotionButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         promotionButton.setForeground(new java.awt.Color(255, 255, 255));
-        promotionButton.setText("Create Promotion");
+        promotionButton.setText("Manage Promotions");
         promotionButton.setMaximumSize(new java.awt.Dimension(160, 35));
         promotionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,7 +167,7 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_viewSalesReportsButtonActionPerformed
 
     private void promotionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_promotionButtonActionPerformed
-        loadForm(new CreatePromotion());
+        loadForm(new ManagePromotions());
     }//GEN-LAST:event_promotionButtonActionPerformed
 
     private void manageEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageEmployeesButtonActionPerformed

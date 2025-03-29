@@ -39,7 +39,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
         if (user != null) {
             if (user.getRole().equals("Manager")) {
-                new ManagerDashboardFrame(user).setVisible(true); // Open Manager Dashboard
+                new ManagerDashboardFrame().setVisible(true); // Open Manager Dashboard
             } else if (user.getRole().equals("Employee")) {
                 new EmployeeDashboardFrame(user).setVisible(true); // Open Employee Dashboard
             }

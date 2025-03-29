@@ -24,7 +24,14 @@ public class ManageEmployees extends JPanel {
 
         // Create table model and JTable for displaying employees
         String[] columnNames = {"Employee ID", "First Name", "Last Name", "Email", "Role"};
-        tableModel = new DefaultTableModel(columnNames, 0);
+        tableModel = new DefaultTableModel(columnNames, 0) {
+            // Override isCellEditable to prevent editing all cells
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;  // All cells are non-editable
+            }
+        };
+
         employeesTable = new JTable(tableModel);
 
         // Customize JTable appearance

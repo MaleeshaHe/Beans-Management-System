@@ -4,8 +4,7 @@ import beans.management.system.DAO.UserDAO;
 import beans.management.system.Model.User;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
@@ -18,6 +17,7 @@ public class ManageEmployees extends JPanel {
 
     public ManageEmployees() {
         setLayout(new BorderLayout());
+        setBackground(Color.WHITE);  // Set panel background to white
 
         // Initialize the UserDAO to interact with the database
         userDAO = new UserDAO();
@@ -27,13 +27,31 @@ public class ManageEmployees extends JPanel {
         tableModel = new DefaultTableModel(columnNames, 0);
         employeesTable = new JTable(tableModel);
 
+        // Customize JTable appearance
+        employeesTable.setBackground(Color.WHITE); // Set background to white
+        employeesTable.setFont(new Font("Segoe UI", Font.PLAIN, 12)); // Set font to Segoe UI, 12pt
+        employeesTable.setRowHeight(30); // Set row height for better readability
+
+        // Set the header background and font color
+        employeesTable.getTableHeader().setBackground(new Color(77, 46, 10)); // Set header background color
+        employeesTable.getTableHeader().setForeground(Color.WHITE); // Set header text color
+        employeesTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set header font
+
         // Add scroll pane to the table
         JScrollPane scrollPane = new JScrollPane(employeesTable);
         add(scrollPane, BorderLayout.CENTER);
 
+        // Create and add header label before the table
+        JLabel headerLabel = new JLabel("Employee Management", JLabel.CENTER);
+        headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        headerLabel.setForeground(new Color(77, 46, 10));  // Set header text color
+        headerLabel.setPreferredSize(new Dimension(600, 40));  // Set height for header
+        add(headerLabel, BorderLayout.NORTH);  // Add the header label to the north of the panel
+
         // Create button panel for Add, Edit, and Delete buttons
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.setBackground(Color.WHITE);  // Set background to white
 
         // Add Employee Button
         addButton = new JButton("Add Employee");
@@ -43,6 +61,7 @@ public class ManageEmployees extends JPanel {
                 addEmployee();
             }
         });
+        styleButton(addButton);  // Apply style to button
         buttonPanel.add(addButton);
 
         // Edit Employee Button
@@ -53,6 +72,7 @@ public class ManageEmployees extends JPanel {
                 editEmployee();
             }
         });
+        styleButton(editButton);  // Apply style to button
         buttonPanel.add(editButton);
 
         // Delete Employee Button (Soft Delete)
@@ -63,6 +83,7 @@ public class ManageEmployees extends JPanel {
                 deleteEmployee();
             }
         });
+        styleButton(deleteButton);  // Apply style to button
         buttonPanel.add(deleteButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
@@ -84,22 +105,9 @@ public class ManageEmployees extends JPanel {
 
     // Add a new employee (using the database to persist data)
     private void addEmployee() {
-        // Get user input for new employee details
-        String firstName = JOptionPane.showInputDialog(this, "Enter First Name:");
-        String lastName = JOptionPane.showInputDialog(this, "Enter Last Name:");
-        String email = JOptionPane.showInputDialog(this, "Enter Email:");
-        String password = JOptionPane.showInputDialog(this, "Enter Password:");
-
-        if (firstName != null && lastName != null && email != null && password != null) {
-            User newUser = new User(0, firstName, lastName, email, "Employee", password);
-            boolean isAdded = userDAO.addEmployee(newUser);
-            if (isAdded) {
-                JOptionPane.showMessageDialog(this, "Employee added successfully.");
-                loadEmployeeData();  // Refresh the employee list
-            } else {
-                JOptionPane.showMessageDialog(this, "Error adding employee.");
-            }
-        }
+        // Open EmployeeInputDialog in Add mode
+        new EmployeeInputDialog((JFrame) SwingUtilities.getWindowAncestor(this), false, null);
+        loadEmployeeData();  // Refresh the employee list
     }
 
     // Edit selected employee (using the database to persist changes)
@@ -112,21 +120,11 @@ public class ManageEmployees extends JPanel {
             String email = (String) tableModel.getValueAt(selectedRow, 3);
             String role = (String) tableModel.getValueAt(selectedRow, 4);
 
-            // Get new details for the employee
-            String newFirstName = JOptionPane.showInputDialog(this, "Edit First Name:", firstName);
-            String newLastName = JOptionPane.showInputDialog(this, "Edit Last Name:", lastName);
-            String newEmail = JOptionPane.showInputDialog(this, "Edit Email:", email);
-
-            if (newFirstName != null && newLastName != null && newEmail != null) {
-                User updatedUser = new User(empId, newFirstName, newLastName, newEmail, role, null);
-                boolean isUpdated = userDAO.updateEmployee(updatedUser);
-                if (isUpdated) {
-                    JOptionPane.showMessageDialog(this, "Employee updated successfully.");
-                    loadEmployeeData();  // Refresh the employee list
-                } else {
-                    JOptionPane.showMessageDialog(this, "Error updating employee.");
-                }
-            }
+            // Create a User object for editing
+            User userToEdit = new User(empId, firstName, lastName, email, role, null);
+            // Open EmployeeInputDialog in Edit mode
+            new EmployeeInputDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, userToEdit);
+            loadEmployeeData();  // Refresh the employee list
         } else {
             JOptionPane.showMessageDialog(this, "Please select an employee to edit.");
         }
@@ -149,6 +147,13 @@ public class ManageEmployees extends JPanel {
         }
     }
 
+    // Method to style buttons with custom background color, font, and text color
+    private void styleButton(JButton button) {
+        button.setBackground(new Color(77, 46, 10)); // Set the background color of the button
+        button.setForeground(Color.WHITE); // Set the text color to white
+        button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font to Segoe UI, 12 pt, Bold
+    }
+
     public static void main(String[] args) {
         // Create and show the Manage Employees frame
         JFrame frame = new JFrame("Manage Employees");
@@ -158,5 +163,3 @@ public class ManageEmployees extends JPanel {
         frame.setVisible(true);
     }
 }
-
-

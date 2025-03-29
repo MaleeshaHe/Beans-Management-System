@@ -3,6 +3,8 @@ package beans.management.system.DAO;
 import beans.management.system.Model.User;
 import utils.DBConnection;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     private Connection conn;
@@ -37,4 +39,78 @@ public class UserDAO {
         }
         return null;  // User not found or invalid credentials
     }
+    
+    // Fetch all employees (users with "Employee" role, excluding deleted ones)
+    public List<User> getAllEmployees() {
+        List<User> employees = new ArrayList<>();
+        String query = "SELECT u.user_id, u.first_name, u.last_name, u.email, r.role_name " +
+                       "FROM User u JOIN Role r ON u.role_id = r.role_id " +
+                       "WHERE r.role_name = 'Employee' AND u.is_deleted = FALSE";  // Only non-deleted employees
+
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                User user = new User(
+                    rs.getInt("user_id"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("email"),
+                    rs.getString("role_name"),
+                    "" // Provide password or fetch as needed
+                );
+                employees.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employees;
+    }
+
+    // Soft delete an employee (set is_deleted = TRUE)
+    public boolean softDeleteEmployee(int userId) {
+        String query = "UPDATE User SET is_deleted = TRUE WHERE user_id = ?";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Add a new employee
+    public boolean addEmployee(User user) {
+        String query = "INSERT INTO User (first_name, last_name, email, password, role_id, is_deleted) " +
+                       "VALUES (?, ?, ?, ?, (SELECT role_id FROM Role WHERE role_name = 'Employee'), FALSE)";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, user.getFirstName());
+            stmt.setString(2, user.getLastName());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getPassword());
+            return stmt.executeUpdate() > 0;  // Execute the insert query
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Edit an employee's information
+    public boolean updateEmployee(User user) {
+        String query = "UPDATE User SET first_name = ?, last_name = ?, email = ? " +
+                       "WHERE user_id = ? AND is_deleted = FALSE";  // Ensure the user is not deleted
+        
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, user.getFirstName());
+            stmt.setString(2, user.getLastName());
+            stmt.setString(3, user.getEmail());
+            stmt.setInt(4, user.getUserId());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    
 }

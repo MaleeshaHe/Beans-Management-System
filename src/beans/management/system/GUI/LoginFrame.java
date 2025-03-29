@@ -7,6 +7,7 @@ package beans.management.system.GUI;
 import beans.management.system.Model.User;
 import beans.management.system.Service.UserService;
 import javax.swing.JOptionPane;
+import utils.SessionManager;
 
 /**
  *
@@ -38,8 +39,12 @@ public class LoginFrame extends javax.swing.JFrame {
         User user = userService.login(email, password);
 
         if (user != null) {
+            
+            // Store user session
+            SessionManager.setCurrentUser(user);
+
             if (user.getRole().equals("Manager")) {
-                new ManagerDashboardFrame(user).setVisible(true); // Open Manager Dashboard
+                new ManagerDashboardFrame().setVisible(true); // Open Manager Dashboard
             } else if (user.getRole().equals("Employee")) {
                 new EmployeeDashboardFrame(user).setVisible(true); // Open Employee Dashboard
             }
@@ -192,8 +197,9 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        // TODO add your handling code here:
-        loginAction();
+        //loginAction();
+        new ManagerDashboardFrame().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     /**

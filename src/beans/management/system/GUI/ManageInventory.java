@@ -86,6 +86,20 @@ public class ManageInventory extends JPanel {
         });
         styleButton(deleteButton);
         buttonPanel.add(deleteButton);
+        
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.setBackground(Color.WHITE);
+
+        // Add Update Stock Button
+        JButton updateStockButton = new JButton("Update Stock");
+        updateStockButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateStock();
+            }
+        });
+        styleButton(updateStockButton);  // Apply style to button
+        buttonPanel.add(updateStockButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -144,6 +158,35 @@ public class ManageInventory extends JPanel {
             loadInventoryData();  // Refresh the inventory list after editing
         } else {
             JOptionPane.showMessageDialog(this, "Please select an inventory item to edit.");
+        }
+    }
+
+    private void updateStock() {
+        int selectedRow = inventoryTable.getSelectedRow();
+        if (selectedRow != -1) {
+            // Get the inventoryId from the selected row (the 5th column, index 4)
+            int inventoryId = (Integer) tableModel.getValueAt(selectedRow, 4);  // Correct index for inventoryId
+            String itemName = (String) tableModel.getValueAt(selectedRow, 0);  // Get item name from the table
+            int stockQuantity = (Integer) tableModel.getValueAt(selectedRow, 1);  // Get stock quantity
+            int reorderLevel = (Integer) tableModel.getValueAt(selectedRow, 2);  // Get reorder level
+
+            // Retrieve the itemId based on itemName
+            int itemId = new InventoryDAO().getItemIdByName(itemName);
+
+            // Create the inventory object for editing
+            Inventory inventoryToEdit = new Inventory(
+                    inventoryId,
+                    itemId,  // Use the retrieved itemId
+                    stockQuantity,
+                    reorderLevel,
+                    null
+            );
+
+            // Open the UpdateStockDialog
+            new UpdateStockDialog((JFrame) SwingUtilities.getWindowAncestor(this), inventoryToEdit);
+            loadInventoryData();  // Refresh the inventory list after updating the stock
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an inventory item to update stock.");
         }
     }
 

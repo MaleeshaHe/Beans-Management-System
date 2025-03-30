@@ -63,13 +63,12 @@ public class InventoryDAO {
 
     // Update inventory stock quantity
     public boolean updateInventory(Inventory inventory) {
-        String query = "UPDATE Inventory SET item_id = ?, stock_quantity = ?, reorder_level = ?, last_updated = ? WHERE inventory_id = ?";
+        String query = "UPDATE Inventory SET stock_quantity = ?, reorder_level = ?, last_updated = ? WHERE inventory_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, inventory.getItemId());  // Set item_id
-            pstmt.setInt(2, inventory.getStockQuantity());  // Set stock_quantity
-            pstmt.setInt(3, inventory.getReorderLevel());  // Set reorder_level
-            pstmt.setTimestamp(4, inventory.getLastUpdated());  // Set last_updated timestamp
-            pstmt.setInt(5, inventory.getInventoryId());  // Set inventory_id for the record to update
+            pstmt.setInt(1, inventory.getStockQuantity());  // Set stock_quantity
+            pstmt.setInt(2, inventory.getReorderLevel());  // Set reorder_level
+            pstmt.setTimestamp(3, inventory.getLastUpdated());  // Set last_updated timestamp
+            pstmt.setInt(4, inventory.getInventoryId());  // Set inventory_id for the record to update
 
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
@@ -78,6 +77,7 @@ public class InventoryDAO {
         }
         return false;
     }
+
 
 
 
@@ -116,4 +116,20 @@ public class InventoryDAO {
         }
         return items;
     }
+    
+    public int getItemIdByName(String itemName) {
+        String query = "SELECT item_id FROM Item WHERE item_name = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, itemName);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("item_id");  // Return the itemId if found
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;  // Return -1 if the itemName is not found
+    }
+
 }

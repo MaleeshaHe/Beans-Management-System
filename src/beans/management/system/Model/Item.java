@@ -1,5 +1,7 @@
 package beans.management.system.Model;
 
+import beans.management.system.GUI.ManageItems;
+
 public class Item {
     
     private int itemId;
@@ -59,5 +61,9 @@ public class Item {
         this.categoryId = categoryId;
     }
     
-    
+    // Override the toString method to display item name in JComboBox
+    @Override
+    public String toString() {
+        return itemName;  // Return the item name instead of the default object representation
+    }
 }

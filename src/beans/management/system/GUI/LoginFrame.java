@@ -46,7 +46,7 @@ public class LoginFrame extends javax.swing.JFrame {
             if (user.getRole().equals("Manager")) {
                 new ManagerDashboardFrame().setVisible(true); // Open Manager Dashboard
             } else if (user.getRole().equals("Employee")) {
-                new EmployeeDashboardFrame(user).setVisible(true); // Open Employee Dashboard
+                new EmployeeDashboardFrame().setVisible(true); // Open Employee Dashboard
             }
             this.setVisible(false); // Close the login screen
         } else {
@@ -198,7 +198,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         //loginAction();
-        new ManagerDashboardFrame().setVisible(true);
+        new EmployeeDashboardFrame().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_loginButtonActionPerformed
 

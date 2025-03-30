@@ -211,7 +211,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_viewSalesReportsButtonActionPerformed
 
     private void categorieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categorieButtonActionPerformed
-        loadForm(new ManagePromotions());
+        loadForm(new ManageCategories());
     }//GEN-LAST:event_categorieButtonActionPerformed
 
     private void ordersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersButtonActionPerformed
@@ -227,7 +227,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_logOutButtonActionPerformed
 
     private void itemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemButtonActionPerformed
-        // TODO add your handling code here:
+        loadForm(new ManageItems());
     }//GEN-LAST:event_itemButtonActionPerformed
 
     private void inventoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inventoryButtonActionPerformed

@@ -46,10 +46,12 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
         navPanel = new javax.swing.JPanel();
         logo = new javax.swing.JLabel();
         viewSalesReportsButton = new javax.swing.JButton();
-        manageEmployeesButton = new javax.swing.JButton();
-        promotionButton = new javax.swing.JButton();
+        ordersButton = new javax.swing.JButton();
+        categorieButton = new javax.swing.JButton();
         logOutButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        itemButton = new javax.swing.JButton();
+        inventoryButton = new javax.swing.JButton();
+        customerButton = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -76,26 +78,26 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        manageEmployeesButton.setBackground(new java.awt.Color(77, 46, 10));
-        manageEmployeesButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        manageEmployeesButton.setForeground(new java.awt.Color(255, 255, 255));
-        manageEmployeesButton.setText("Manage Employees");
-        manageEmployeesButton.setMaximumSize(new java.awt.Dimension(160, 35));
-        manageEmployeesButton.setPreferredSize(new java.awt.Dimension(100, 27));
-        manageEmployeesButton.addActionListener(new java.awt.event.ActionListener() {
+        ordersButton.setBackground(new java.awt.Color(77, 46, 10));
+        ordersButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ordersButton.setForeground(new java.awt.Color(255, 255, 255));
+        ordersButton.setText("Orders");
+        ordersButton.setMaximumSize(new java.awt.Dimension(160, 35));
+        ordersButton.setPreferredSize(new java.awt.Dimension(100, 27));
+        ordersButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                manageEmployeesButtonActionPerformed(evt);
+                ordersButtonActionPerformed(evt);
             }
         });
 
-        promotionButton.setBackground(new java.awt.Color(77, 46, 10));
-        promotionButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        promotionButton.setForeground(new java.awt.Color(255, 255, 255));
-        promotionButton.setText("Manage Promotions");
-        promotionButton.setMaximumSize(new java.awt.Dimension(160, 35));
-        promotionButton.addActionListener(new java.awt.event.ActionListener() {
+        categorieButton.setBackground(new java.awt.Color(77, 46, 10));
+        categorieButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        categorieButton.setForeground(new java.awt.Color(255, 255, 255));
+        categorieButton.setText("Categories");
+        categorieButton.setMaximumSize(new java.awt.Dimension(160, 35));
+        categorieButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                promotionButtonActionPerformed(evt);
+                categorieButtonActionPerformed(evt);
             }
         });
 
@@ -110,25 +112,57 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Employee");
+        itemButton.setBackground(new java.awt.Color(77, 46, 10));
+        itemButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        itemButton.setForeground(new java.awt.Color(255, 255, 255));
+        itemButton.setText("Items");
+        itemButton.setMaximumSize(new java.awt.Dimension(160, 35));
+        itemButton.setPreferredSize(new java.awt.Dimension(100, 27));
+        itemButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemButtonActionPerformed(evt);
+            }
+        });
+
+        inventoryButton.setBackground(new java.awt.Color(77, 46, 10));
+        inventoryButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        inventoryButton.setForeground(new java.awt.Color(255, 255, 255));
+        inventoryButton.setText("Inventory");
+        inventoryButton.setMaximumSize(new java.awt.Dimension(160, 35));
+        inventoryButton.setPreferredSize(new java.awt.Dimension(100, 27));
+        inventoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inventoryButtonActionPerformed(evt);
+            }
+        });
+
+        customerButton.setBackground(new java.awt.Color(77, 46, 10));
+        customerButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        customerButton.setForeground(new java.awt.Color(255, 255, 255));
+        customerButton.setText("Customer");
+        customerButton.setMaximumSize(new java.awt.Dimension(160, 35));
+        customerButton.setPreferredSize(new java.awt.Dimension(100, 27));
+        customerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customerButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout navPanelLayout = new javax.swing.GroupLayout(navPanel);
         navPanel.setLayout(navPanelLayout);
         navPanelLayout.setHorizontalGroup(
             navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navPanelLayout.createSequentialGroup()
-                .addGroup(navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(navPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(viewSalesReportsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(promotionButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(manageEmployeesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(logOutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(navPanelLayout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addGroup(navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(viewSalesReportsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(categorieButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ordersButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logOutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(itemButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(inventoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(customerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(186, 186, 186))
         );
         navPanelLayout.setVerticalGroup(
@@ -139,12 +173,16 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(viewSalesReportsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(manageEmployeesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ordersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(promotionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(86, 86, 86)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 245, Short.MAX_VALUE)
+                .addComponent(customerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(inventoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(itemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(categorieButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
                 .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -172,13 +210,13 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
         loadForm(new ViewSalesReports());
     }//GEN-LAST:event_viewSalesReportsButtonActionPerformed
 
-    private void promotionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_promotionButtonActionPerformed
+    private void categorieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categorieButtonActionPerformed
         loadForm(new ManagePromotions());
-    }//GEN-LAST:event_promotionButtonActionPerformed
+    }//GEN-LAST:event_categorieButtonActionPerformed
 
-    private void manageEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageEmployeesButtonActionPerformed
+    private void ordersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersButtonActionPerformed
         loadForm(new ManageEmployees());
-    }//GEN-LAST:event_manageEmployeesButtonActionPerformed
+    }//GEN-LAST:event_ordersButtonActionPerformed
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
         // Clear the session and redirect to login screen
@@ -187,6 +225,18 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
         new LoginFrame().setVisible(true);  // Show login screen
         this.dispose();  // Close the current frame (ManagerDashboardFrame)
     }//GEN-LAST:event_logOutButtonActionPerformed
+
+    private void itemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemButtonActionPerformed
+
+    private void inventoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inventoryButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inventoryButtonActionPerformed
+
+    private void customerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customerButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,13 +277,15 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton categorieButton;
     private javax.swing.JPanel contentPanel;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton customerButton;
+    private javax.swing.JButton inventoryButton;
+    private javax.swing.JButton itemButton;
     private javax.swing.JButton logOutButton;
     private javax.swing.JLabel logo;
-    private javax.swing.JButton manageEmployeesButton;
     private javax.swing.JPanel navPanel;
-    private javax.swing.JButton promotionButton;
+    private javax.swing.JButton ordersButton;
     private javax.swing.JButton viewSalesReportsButton;
     // End of variables declaration//GEN-END:variables
 }

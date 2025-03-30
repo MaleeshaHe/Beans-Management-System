@@ -71,6 +71,7 @@ public class ItemDAO {
     }
 
 
+
     // Soft delete an item (set is_deleted = 1)
     public boolean softDeleteItem(int itemId) {
         String query = "UPDATE Item SET is_deleted = 1 WHERE item_id = ?";
@@ -103,9 +104,9 @@ public class ItemDAO {
         return categories;
     }
     
-        // Method to get item ID by item name
+    // Method to get item ID by item name
     public int getItemIdByName(String itemName) {
-        String query = "SELECT item_id FROM Item WHERE item_name = ? AND is_deleted = 0";  // Checking for non-deleted items
+        String query = "SELECT item_id FROM Item WHERE item_name = ? AND is_deleted = 0";  // Only fetch non-deleted items
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, itemName);
             ResultSet rs = pstmt.executeQuery();
@@ -115,6 +116,7 @@ public class ItemDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Return -1 if item name not found or an error occurs
+        return -1;  // Return -1 if item name not found or an error occurs
     }
+
 }

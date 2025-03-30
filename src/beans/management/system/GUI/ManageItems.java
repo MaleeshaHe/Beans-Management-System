@@ -119,7 +119,7 @@ public class ManageItems extends JPanel {
     }
 
     // Edit selected item (using the database to persist changes)
-    private void editItem() {
+      private void editItem() {
         int selectedRow = itemsTable.getSelectedRow();
         if (selectedRow != -1) {
             // Get the item data from the selected row
@@ -128,23 +128,27 @@ public class ManageItems extends JPanel {
             String description = (String) tableModel.getValueAt(selectedRow, 2);
             String categoryName = (String) tableModel.getValueAt(selectedRow, 3);
 
-            // Get the category ID based on the category name (find the category object)
+            // Get the category ID based on the category name
             Category selectedCategory = itemDAO.getAllCategories().stream()
                     .filter(cat -> cat.getCategoryName().equals(categoryName))
                     .findFirst().orElse(null);
 
+            // Get the item ID (ensure itemId is passed from the table, or get it based on itemName)
+            int itemId = itemDAO.getItemIdByName(itemName);  // Ensure you get the item ID correctly
+
             // Create a new Item object for editing
-            Item itemToEdit = new Item(0, itemName, price, description, selectedCategory != null ? selectedCategory.getCategoryId() : 0);
+            Item itemToEdit = new Item(itemId, itemName, price, description, selectedCategory != null ? selectedCategory.getCategoryId() : 0);
 
             // Open ItemInputDialog in Edit mode
             new ItemInputDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, itemToEdit);
 
             // Refresh the item list after editing
-            loadItemData(); 
+            loadItemData();
         } else {
             JOptionPane.showMessageDialog(this, "Please select an item to edit.");
         }
     }
+
 
 
     // Soft Delete selected item (mark as deleted)

@@ -127,8 +127,11 @@ public class ItemInputDialog extends JDialog {
             return;
         }
 
-        // Update the Item object based on the mode (add or edit)
+        // Create an Item object, set the ID for the update (if in edit mode)
         Item newItem = new Item(isEditMode ? currentItem.getItemId() : 0, itemName, price, description, selectedCategory.getCategoryId());
+
+        // Ensure data is being passed correctly
+        System.out.println("Saving Item: " + newItem.getItemName() + ", ID: " + newItem.getItemId());
 
         boolean success;
 
@@ -145,7 +148,6 @@ public class ItemInputDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Error saving item.");
         }
     }
-
 
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {

@@ -12,7 +12,10 @@ import beans.management.system.Model.Customer;
 import beans.management.system.Model.Promotion;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.table.DefaultTableModel;
 import java.util.*;
 import java.util.List;
@@ -33,7 +36,7 @@ public class PlaceOrderPanel extends JPanel {
     private double discountAmount = 0.0;
     private int selectedCustomerId, selectedPromoId;
     private List<OrderItem> selectedItems = new ArrayList<>();
-    private int selectedItemId ;
+    private int selectedItemId;
     private JLabel totalAmountLabel;
 
     public PlaceOrderPanel() {
@@ -53,7 +56,7 @@ public class PlaceOrderPanel extends JPanel {
         // Left panel for items table
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(Color.WHITE);
-        String[] itemColumns = {"Item Name", "Price", "Description", "Quantity"};
+        String[] itemColumns = {"Item Name", "Price (SAR)", "Description", "Quantity"};
         itemsTableModel = new DefaultTableModel(itemColumns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -94,14 +97,14 @@ public class PlaceOrderPanel extends JPanel {
         rightTopPanel.add(promotionsDropdown);
 
         // Total Labels
-        rightTopPanel.add(new JLabel("Total Amount:"));
-        totalLabel = new JLabel("$0.00");
+        rightTopPanel.add(new JLabel("Total Amount (SAR):"));
+        totalLabel = new JLabel("SAR 0.00");
         rightTopPanel.add(totalLabel);
 
         rightPanel.add(rightTopPanel, BorderLayout.NORTH);
 
         // Table for selected items (Right Side)
-        String[] selectedItemColumns = {"Item Name", "Price", "Quantity", "Total"};
+        String[] selectedItemColumns = {"Item Name", "Price (SAR)", "Quantity", "Total (SAR)"};
         selectedItemsTableModel = new DefaultTableModel(selectedItemColumns, 0);
         selectedItemsTable = new JTable(selectedItemsTableModel);
         selectedItemsTable.setRowHeight(30);
@@ -111,11 +114,11 @@ public class PlaceOrderPanel extends JPanel {
 
         // Bottom panel for discount and final total
         JPanel bottomPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-        bottomPanel.add(new JLabel("Discount:"));
-        discountLabel = new JLabel("$0.00");
+        bottomPanel.add(new JLabel("Discount (SAR):"));
+        discountLabel = new JLabel("SAR 0.00");
         bottomPanel.add(discountLabel);
-        bottomPanel.add(new JLabel("Final Total:"));
-        finalTotalLabel = new JLabel("$0.00");
+        bottomPanel.add(new JLabel("Final Total (SAR):"));
+        finalTotalLabel = new JLabel("SAR 0.00");
         bottomPanel.add(finalTotalLabel);
 
         // Place Order Button
@@ -135,9 +138,6 @@ public class PlaceOrderPanel extends JPanel {
         splitPane.setRightComponent(rightPanel);
 
         add(splitPane, BorderLayout.CENTER);
-        
-        // Example of label initialization
-        totalAmountLabel = new JLabel("Total Amount: 0.00");
 
     }
 
@@ -162,11 +162,48 @@ public class PlaceOrderPanel extends JPanel {
         }
     }
 
+    private void updateTotalAmount() {
+        double totalAmount = 0.0;
+        // Calculate total amount for items in the order
+        for (int i = 0; i < selectedItemsTableModel.getRowCount(); i++) {
+            try {
+                // Get the item total price from the table (remove the "SAR " prefix)
+                String totalStr = selectedItemsTableModel.getValueAt(i, 3).toString();
+                totalStr = totalStr.replace("SAR", "").trim(); // Remove "SAR"
+                totalAmount += Double.parseDouble(totalStr);  // Add to total amount
+            } catch (NumberFormatException e) {
+                e.printStackTrace();  // Handle invalid data
+            }
+        }
+
+        // Apply discount if promotion is selected
+        if (selectedPromoId != -1) {
+            // Get selected promo code and discount percentage
+            double discountPercentage = promotionDAO.getDiscountById(selectedPromoId);
+            discountAmount = totalAmount * (discountPercentage / 100);
+            totalAmount -= discountAmount;  // Apply discount to total amount
+        }
+
+        // Update the total amount and discount in the UI
+        totalLabel.setText("SAR " + String.format("%.2f", totalAmount));
+        discountLabel.setText("SAR " + String.format("%.2f", discountAmount));
+        finalTotalLabel.setText("SAR " + String.format("%.2f", totalAmount));
+        this.totalAmount = totalAmount;  // Store the total amount for placing the order
+    }
+    
     private void addItemToOrder() {
         int selectedRow = itemsTable.getSelectedRow();
         if (selectedRow != -1) {
             String itemName = (String) itemsTable.getValueAt(selectedRow, 0); // Item Name
-            double itemPrice = (Double) itemsTable.getValueAt(selectedRow, 1); // Item Price
+            double itemPrice = 0.0;
+
+            // Get the item price from the table (it should be a Double)
+            try {
+                itemPrice = Double.parseDouble(itemsTable.getValueAt(selectedRow, 1).toString().replace("SAR", "").trim()); // Remove "SAR" and parse the price
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Invalid item price.");
+                return;
+            }
 
             // Get the item ID by its name
             selectedItemId = itemDAO.getItemIdByName(itemName); // Fetch the item ID
@@ -187,7 +224,7 @@ public class PlaceOrderPanel extends JPanel {
 
                 // Add the selected item to the right table
                 selectedItemsTableModel.addRow(new Object[]{
-                    itemName, itemPrice, quantity, itemPrice * quantity
+                        itemName, "SAR " + itemPrice, quantity, "SAR " + (itemPrice * quantity)
                 });
 
                 updateTotalAmount();
@@ -198,27 +235,6 @@ public class PlaceOrderPanel extends JPanel {
     }
 
 
-
-    private void updateTotalAmount() {
-        double totalAmount = 0.0;
-        // Calculate total amount for items in the order
-        for (int i = 0; i < selectedItemsTableModel.getRowCount(); i++) {
-            totalAmount += (Double) selectedItemsTableModel.getValueAt(i, 3);  // Item total (price * quantity)
-        }
-
-        // Apply discount if promotion is selected
-        if (selectedPromoId != -1) {
-            // Get selected promo code and discount percentage
-            double discountPercentage = promotionDAO.getDiscountById(selectedPromoId);
-            double discountAmount = totalAmount * (discountPercentage / 100);
-            totalAmount -= discountAmount;  // Apply discount to total amount
-        }
-
-        // Update the total amount in the UI
-        totalAmountLabel.setText("Total Amount: " + totalAmount);
-        this.totalAmount = totalAmount;  // Store the total amount for placing the order
-    }
-    
     private void placeOrder() {
         selectedCustomerId = ((Customer) customersDropdown.getSelectedItem()).getUserId();
         selectedPromoId = ((Promotion) promotionsDropdown.getSelectedItem()).getPromotionId();
@@ -244,9 +260,9 @@ public class PlaceOrderPanel extends JPanel {
     private void resetForm() {
         selectedItems.clear();
         selectedItemsTableModel.setRowCount(0);
-        totalLabel.setText("$0.00");
-        discountLabel.setText("$0.00");
-        finalTotalLabel.setText("$0.00");
+        totalLabel.setText("SAR 0.00");
+        discountLabel.setText("SAR 0.00");
+        finalTotalLabel.setText("SAR 0.00");
         customersDropdown.setSelectedIndex(0);
         promotionsDropdown.setSelectedIndex(0);
     }

@@ -68,5 +68,11 @@ public class Promotion {
     public void setDiscountPercentage(double discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
+
+    @Override
+    public String toString() {
+        return promoCode;
+    }
+    
     
 }

@@ -118,5 +118,31 @@ public class ItemDAO {
         }
         return -1;  // Return -1 if item name not found or an error occurs
     }
+    
+    // In ItemDAO.java
+    public Item getItemById(int itemId) {
+        Item item = null;
+        String query = "SELECT * FROM Item WHERE item_id = ? AND is_deleted = 0";  // Ensures the item is not soft-deleted
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, itemId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                item = new Item(
+                    rs.getInt("item_id"),
+                    rs.getString("item_name"),
+                    rs.getDouble("price"),
+                    rs.getString("description"),
+                    rs.getInt("category_id")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return item;
+    }
+
 
 }

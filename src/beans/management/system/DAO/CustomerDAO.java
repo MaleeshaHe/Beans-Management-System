@@ -89,4 +89,24 @@ public class CustomerDAO {
         }
         return false;
     }
+    
+    // In CustomerDAO.java
+    public int getCustomerIdByName(String firstName) {
+        int customerId = -1;
+        String query = "SELECT user_id FROM User WHERE first_name = ? AND is_deleted = 0";  // Ensures the customer is not soft-deleted
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, firstName);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                customerId = rs.getInt("user_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return customerId;
+    }
+
 }

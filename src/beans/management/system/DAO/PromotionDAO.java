@@ -84,4 +84,24 @@ public class PromotionDAO {
         }
         return false;
     }
+    
+    // In PromotionDAO.java
+    public int getPromoIdByCode(String promoCode) {
+        int promoId = -1;
+        String query = "SELECT promotion_id FROM Promotion WHERE promo_code = ? AND is_deleted = 0";  // Ensures the promotion is not soft-deleted
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, promoCode);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                promoId = rs.getInt("promotion_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return promoId;
+    }
+
 }

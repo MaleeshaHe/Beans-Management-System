@@ -15,18 +15,25 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.*;
+import java.util.List;
 
 public class PlaceOrderPanel extends JPanel {
 
-    private JTable itemsTable, customersTable, promotionsTable;
-    private DefaultTableModel itemsTableModel, customersTableModel, promotionsTableModel;
+    private JTable itemsTable, selectedItemsTable;
+    private DefaultTableModel itemsTableModel, selectedItemsTableModel;
+    private JComboBox<Customer> customersDropdown;
+    private JComboBox<Promotion> promotionsDropdown;
     private JButton placeOrderButton;
+    private JLabel totalLabel, discountLabel, finalTotalLabel;
     private ItemDAO itemDAO;
     private OrderDAO orderDAO;
     private CustomerDAO customerDAO;
     private PromotionDAO promotionDAO;
     private double totalAmount = 0.0;
-    private int selectedItemId, selectedCustomerId, selectedPromoId;
+    private double discountAmount = 0.0;
+    private int selectedCustomerId, selectedPromoId;
+    private List<OrderItem> selectedItems = new ArrayList<>();
+    private int selectedItemId ;
 
     public PlaceOrderPanel() {
         setLayout(new BorderLayout());
@@ -37,41 +44,78 @@ public class PlaceOrderPanel extends JPanel {
         customerDAO = new CustomerDAO();
         promotionDAO = new PromotionDAO();
 
-        // Panel for displaying tables
-        JPanel tablePanel = new JPanel();
-        tablePanel.setLayout(new GridLayout(1, 3));
+        // Split layout: Left side for items, right side for order summary and customer/promotion
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        splitPane.setDividerLocation(600);
+        splitPane.setDividerSize(10);
 
-        // Table for items
-        String[] itemColumns = {"Item Name", "Price", "Description"};
-        itemsTableModel = new DefaultTableModel(itemColumns, 0);
+        // Left panel for items table
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.setBackground(Color.WHITE);
+        String[] itemColumns = {"Item Name", "Price", "Description", "Quantity"};
+        itemsTableModel = new DefaultTableModel(itemColumns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 3; // Only allow editing quantity
+            }
+        };
         itemsTable = new JTable(itemsTableModel);
         itemsTable.setRowHeight(30);
         itemsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         JScrollPane itemScrollPane = new JScrollPane(itemsTable);
-        tablePanel.add(itemScrollPane);
+        leftPanel.add(itemScrollPane, BorderLayout.CENTER);
         loadItems();
+        itemsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) { // Double-click to add item to order list
+                    addItemToOrder();
+                }
+            }
+        });
 
-        // Table for customers
-        String[] customerColumns = {"Customer Name", "Email"};
-        customersTableModel = new DefaultTableModel(customerColumns, 0);
-        customersTable = new JTable(customersTableModel);
-        customersTable.setRowHeight(30);
-        customersTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        JScrollPane customerScrollPane = new JScrollPane(customersTable);
-        tablePanel.add(customerScrollPane);
+        // Right panel for selected items and details
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        JPanel rightTopPanel = new JPanel();
+        rightTopPanel.setLayout(new GridLayout(3, 2, 10, 10));
+
+        // Customer Dropdown
+        rightTopPanel.add(new JLabel("Select Customer:"));
+        customersDropdown = new JComboBox<>();
         loadCustomers();
+        rightTopPanel.add(customersDropdown);
 
-        // Table for promotions
-        String[] promoColumns = {"Promo Code", "Discount"};
-        promotionsTableModel = new DefaultTableModel(promoColumns, 0);
-        promotionsTable = new JTable(promotionsTableModel);
-        promotionsTable.setRowHeight(30);
-        promotionsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        JScrollPane promoScrollPane = new JScrollPane(promotionsTable);
-        tablePanel.add(promoScrollPane);
+        // Promotion Dropdown
+        rightTopPanel.add(new JLabel("Select Promotion:"));
+        promotionsDropdown = new JComboBox<>();
         loadPromotions();
+        rightTopPanel.add(promotionsDropdown);
 
-        add(tablePanel, BorderLayout.CENTER);
+        // Total Labels
+        rightTopPanel.add(new JLabel("Total Amount:"));
+        totalLabel = new JLabel("$0.00");
+        rightTopPanel.add(totalLabel);
+
+        rightPanel.add(rightTopPanel, BorderLayout.NORTH);
+
+        // Table for selected items (Right Side)
+        String[] selectedItemColumns = {"Item Name", "Price", "Quantity", "Total"};
+        selectedItemsTableModel = new DefaultTableModel(selectedItemColumns, 0);
+        selectedItemsTable = new JTable(selectedItemsTableModel);
+        selectedItemsTable.setRowHeight(30);
+        selectedItemsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        JScrollPane selectedItemsScrollPane = new JScrollPane(selectedItemsTable);
+        rightPanel.add(selectedItemsScrollPane, BorderLayout.CENTER);
+
+        // Bottom panel for discount and final total
+        JPanel bottomPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+        bottomPanel.add(new JLabel("Discount:"));
+        discountLabel = new JLabel("$0.00");
+        bottomPanel.add(discountLabel);
+        bottomPanel.add(new JLabel("Final Total:"));
+        finalTotalLabel = new JLabel("$0.00");
+        bottomPanel.add(finalTotalLabel);
 
         // Place Order Button
         placeOrderButton = new JButton("Place Order");
@@ -82,65 +126,115 @@ public class PlaceOrderPanel extends JPanel {
             }
         });
         styleButton(placeOrderButton);
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.setBackground(Color.WHITE);
-        buttonPanel.add(placeOrderButton);
-        add(buttonPanel, BorderLayout.SOUTH);
+        bottomPanel.add(placeOrderButton);
+
+        rightPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+        splitPane.setLeftComponent(leftPanel);
+        splitPane.setRightComponent(rightPanel);
+
+        add(splitPane, BorderLayout.CENTER);
     }
 
     private void loadItems() {
         List<Item> items = itemDAO.getAllItems();
         for (Item item : items) {
-            itemsTableModel.addRow(new Object[]{item.getItemName(), item.getPrice(), item.getDescription()});
+            itemsTableModel.addRow(new Object[]{item.getItemName(), item.getPrice(), item.getDescription(), 0});
         }
     }
 
     private void loadCustomers() {
         List<Customer> customers = customerDAO.getAllCustomers();
         for (Customer customer : customers) {
-            customersTableModel.addRow(new Object[]{customer.getFirstName() + " " + customer.getLastName(), customer.getEmail()});
+            customersDropdown.addItem(customer);
         }
     }
 
     private void loadPromotions() {
         List<Promotion> promotions = promotionDAO.getAllPromotions();
         for (Promotion promotion : promotions) {
-            promotionsTableModel.addRow(new Object[]{promotion.getPromoCode(), promotion.getDiscountPercentage()});
+            promotionsDropdown.addItem(promotion);
         }
     }
 
-    private void placeOrder() {
-        // Get selected data
-        int selectedItemRow = itemsTable.getSelectedRow();
-        int selectedCustomerRow = customersTable.getSelectedRow();
-        int selectedPromoRow = promotionsTable.getSelectedRow();
+    private void addItemToOrder() {
+        int selectedRow = itemsTable.getSelectedRow();
+        if (selectedRow != -1) {
+            String itemName = (String) itemsTable.getValueAt(selectedRow, 0); // Item Name
+            double itemPrice = (Double) itemsTable.getValueAt(selectedRow, 1); // Item Price
 
-        if (selectedItemRow == -1 || selectedCustomerRow == -1 || selectedPromoRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select item, customer, and promotion.");
+            // Get the item ID by its name
+            selectedItemId = itemDAO.getItemIdByName(itemName); // Fetch the item ID
+
+            int quantity = 0;
+            try {
+                quantity = Integer.parseInt(itemsTable.getValueAt(selectedRow, 3).toString()); // Fetch quantity from table
+            } catch (NumberFormatException e) {
+                // Handle invalid quantity input gracefully
+                JOptionPane.showMessageDialog(this, "Please enter a valid quantity.");
+                return;
+            }
+
+            // Ensure that quantity is greater than 0 before adding the item
+            if (quantity > 0) {
+                // Create the OrderItem and add it to the selected items list
+                selectedItems.add(new OrderItem(0, selectedItemId, quantity));
+
+                // Add the selected item to the right table
+                selectedItemsTableModel.addRow(new Object[]{
+                    itemName, itemPrice, quantity, itemPrice * quantity
+                });
+
+                updateTotalAmount();
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select a valid quantity.");
+            }
+        }
+    }
+
+
+    private void updateTotalAmount() {
+        totalAmount = 0;
+        discountAmount = 0;
+        for (OrderItem item : selectedItems) {
+            totalAmount += item.getQuantity() * itemDAO.getItemById(item.getItemId()).getPrice();
+        }
+        // Assuming promotions and discount logic is added later
+        finalTotalLabel.setText("$" + totalAmount);
+        totalLabel.setText("$" + totalAmount);
+        discountLabel.setText("$" + discountAmount);
+    }
+
+    private void placeOrder() {
+        selectedCustomerId = ((Customer) customersDropdown.getSelectedItem()).getUserId();
+        selectedPromoId = ((Promotion) promotionsDropdown.getSelectedItem()).getPromotionId();
+
+        if (selectedItems.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please add items to the order.");
             return;
         }
 
-        selectedItemId = itemDAO.getItemIdByName(itemsTable.getValueAt(selectedItemRow, 0).toString());
-        selectedCustomerId = customerDAO.getCustomerIdByName(customersTable.getValueAt(selectedCustomerRow, 0).toString());
-        selectedPromoId = promotionDAO.getPromoIdByCode(promotionsTable.getValueAt(selectedPromoRow, 0).toString());
-
-        // Calculate total amount
-        int quantity = Integer.parseInt(JOptionPane.showInputDialog("Enter quantity for the selected item:"));
-        Item selectedItem = itemDAO.getItemById(selectedItemId);
-        totalAmount = selectedItem.getPrice() * quantity;
-
         // Create Order, OrderItem, and Receipt objects
-        Order order = new Order(0, totalAmount, new Date(), "Placed", selectedCustomerId, 1, selectedPromoId);  // 1 is the employee_id for now
-        OrderItem orderItem = new OrderItem(0, selectedItemId, quantity);
+        Order order = new Order(0, totalAmount, new Date(), "Placed", selectedCustomerId, 1, selectedPromoId);
         Receipt receipt = new Receipt(0, "Cash", new Date(), totalAmount, 0);  // Use "Cash" for payment method as an example
 
-        boolean success = orderDAO.placeOrder(order, Collections.singletonList(orderItem), receipt);
+        boolean success = orderDAO.placeOrder(order, selectedItems, receipt);
         if (success) {
             JOptionPane.showMessageDialog(this, "Order placed successfully!");
-            // Optionally reset tables or perform other actions
+            resetForm();
         } else {
             JOptionPane.showMessageDialog(this, "Error placing order.");
         }
+    }
+
+    private void resetForm() {
+        selectedItems.clear();
+        selectedItemsTableModel.setRowCount(0);
+        totalLabel.setText("$0.00");
+        discountLabel.setText("$0.00");
+        finalTotalLabel.setText("$0.00");
+        customersDropdown.setSelectedIndex(0);
+        promotionsDropdown.setSelectedIndex(0);
     }
 
     // Button styling method

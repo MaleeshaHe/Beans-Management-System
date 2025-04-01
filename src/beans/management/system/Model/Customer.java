@@ -78,6 +78,10 @@ public class Customer {
         this.roleName = roleName;
     }
     
+    @Override
+    public String toString() {
+        return firstName + " " + lastName; // Display the full name of the customer
+    }
     
     
 }

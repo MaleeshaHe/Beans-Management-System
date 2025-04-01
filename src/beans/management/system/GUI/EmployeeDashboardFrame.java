@@ -62,7 +62,6 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
         setTitle("Employee Dashboard");
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(900, 700));
-        setResizable(false);
 
         navPanel.setBackground(new java.awt.Color(253, 247, 242));
         navPanel.setPreferredSize(new java.awt.Dimension(180, 500));

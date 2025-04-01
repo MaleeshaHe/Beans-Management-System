@@ -215,7 +215,7 @@ public class ManageInventory extends JPanel {
     private void styleButton(JButton button) {
         button.setBackground(new Color(77, 46, 10)); // Set background color of button
         button.setForeground(Color.WHITE); // Set text color to white
-        button.setFont(new Font("Segoe UI", Font.BOLD, 14)); // Set font
+        button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font
     }
 
     public static void main(String[] args) {

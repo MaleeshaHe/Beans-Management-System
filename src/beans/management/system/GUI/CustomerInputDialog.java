@@ -64,7 +64,11 @@ public class CustomerInputDialog extends JDialog {
         // Save and Cancel Buttons
         saveButton = new JButton(isEditMode ? "Update Customer" : "Add Customer");
         cancelButton = new JButton("Cancel");
-
+        
+        // Style buttons
+        styleButton(saveButton);
+        styleButton(cancelButton);
+        
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -131,5 +135,13 @@ public class CustomerInputDialog extends JDialog {
         } else {
             JOptionPane.showMessageDialog(this, "Error saving customer.");
         }
+    }
+    
+    // Method to style buttons with custom background color, font, and text color
+    private void styleButton(JButton button) {
+        button.setBackground(new Color(77, 46, 10)); // Set background color of button
+        button.setForeground(Color.WHITE); // Set text color to white
+        button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font
+        button.setPreferredSize(new Dimension(135, 35));  // Set button size
     }
 }

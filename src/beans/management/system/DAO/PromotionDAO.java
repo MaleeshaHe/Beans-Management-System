@@ -103,5 +103,20 @@ public class PromotionDAO {
 
         return promoId;
     }
+    
+    public double getDiscountById(int promoId) {
+        String query = "SELECT discount_percentage FROM Promotion WHERE promotion_id = ? AND is_deleted = FALSE"; 
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, promoId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("discount_percentage"); // Return the discount percentage
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0; // Return 0 if no discount found
+    }
+
 
 }

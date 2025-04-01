@@ -34,6 +34,7 @@ public class PlaceOrderPanel extends JPanel {
     private int selectedCustomerId, selectedPromoId;
     private List<OrderItem> selectedItems = new ArrayList<>();
     private int selectedItemId ;
+    private JLabel totalAmountLabel;
 
     public PlaceOrderPanel() {
         setLayout(new BorderLayout());
@@ -134,6 +135,10 @@ public class PlaceOrderPanel extends JPanel {
         splitPane.setRightComponent(rightPanel);
 
         add(splitPane, BorderLayout.CENTER);
+        
+        // Example of label initialization
+        totalAmountLabel = new JLabel("Total Amount: 0.00");
+
     }
 
     private void loadItems() {
@@ -193,18 +198,27 @@ public class PlaceOrderPanel extends JPanel {
     }
 
 
-    private void updateTotalAmount() {
-        totalAmount = 0;
-        discountAmount = 0;
-        for (OrderItem item : selectedItems) {
-            totalAmount += item.getQuantity() * itemDAO.getItemById(item.getItemId()).getPrice();
-        }
-        // Assuming promotions and discount logic is added later
-        finalTotalLabel.setText("$" + totalAmount);
-        totalLabel.setText("$" + totalAmount);
-        discountLabel.setText("$" + discountAmount);
-    }
 
+    private void updateTotalAmount() {
+        double totalAmount = 0.0;
+        // Calculate total amount for items in the order
+        for (int i = 0; i < selectedItemsTableModel.getRowCount(); i++) {
+            totalAmount += (Double) selectedItemsTableModel.getValueAt(i, 3);  // Item total (price * quantity)
+        }
+
+        // Apply discount if promotion is selected
+        if (selectedPromoId != -1) {
+            // Get selected promo code and discount percentage
+            double discountPercentage = promotionDAO.getDiscountById(selectedPromoId);
+            double discountAmount = totalAmount * (discountPercentage / 100);
+            totalAmount -= discountAmount;  // Apply discount to total amount
+        }
+
+        // Update the total amount in the UI
+        totalAmountLabel.setText("Total Amount: " + totalAmount);
+        this.totalAmount = totalAmount;  // Store the total amount for placing the order
+    }
+    
     private void placeOrder() {
         selectedCustomerId = ((Customer) customersDropdown.getSelectedItem()).getUserId();
         selectedPromoId = ((Promotion) promotionsDropdown.getSelectedItem()).getPromotionId();

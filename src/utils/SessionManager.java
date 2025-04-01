@@ -21,6 +21,14 @@ public class SessionManager {
     public static User getCurrentUser() {
         return currentUser;
     }
+    
+    // Get the user_id of the logged-in user
+    public static int getCurrentUserId() {
+        if (currentUser != null) {
+            return currentUser.getUserId();  // Assuming User class has a getUserId() method
+        }
+        return -1;  // Return -1 if no user is logged in
+    }
 
     // Clear the session data (log out)
     public static void logout() {

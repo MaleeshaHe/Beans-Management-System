@@ -32,6 +32,9 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
 
         // Get the current user session
         User currentUser = SessionManager.getCurrentUser();
+        // Optional: You can display the username on the dashboard if needed
+        System.out.println("Logged-in user: " + currentUser.getFirstName() + " " + currentUser.getLastName());;
+        System.out.println("Logged-in user ID: " + currentUser.getUserId());;
     }
 
     /**
@@ -46,12 +49,13 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
         navPanel = new javax.swing.JPanel();
         logo = new javax.swing.JLabel();
         viewSalesReportsButton = new javax.swing.JButton();
-        ordersButton = new javax.swing.JButton();
+        placeOrderButton = new javax.swing.JButton();
         categorieButton = new javax.swing.JButton();
         logOutButton = new javax.swing.JButton();
         itemButton = new javax.swing.JButton();
         inventoryButton = new javax.swing.JButton();
         customerButton = new javax.swing.JButton();
+        ordersButton1 = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -78,15 +82,15 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        ordersButton.setBackground(new java.awt.Color(77, 46, 10));
-        ordersButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        ordersButton.setForeground(new java.awt.Color(255, 255, 255));
-        ordersButton.setText("Orders");
-        ordersButton.setMaximumSize(new java.awt.Dimension(160, 35));
-        ordersButton.setPreferredSize(new java.awt.Dimension(100, 27));
-        ordersButton.addActionListener(new java.awt.event.ActionListener() {
+        placeOrderButton.setBackground(new java.awt.Color(77, 46, 10));
+        placeOrderButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        placeOrderButton.setForeground(new java.awt.Color(255, 255, 255));
+        placeOrderButton.setText("Place Order");
+        placeOrderButton.setMaximumSize(new java.awt.Dimension(160, 35));
+        placeOrderButton.setPreferredSize(new java.awt.Dimension(100, 27));
+        placeOrderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ordersButtonActionPerformed(evt);
+                placeOrderButtonActionPerformed(evt);
             }
         });
 
@@ -148,6 +152,18 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
+        ordersButton1.setBackground(new java.awt.Color(77, 46, 10));
+        ordersButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ordersButton1.setForeground(new java.awt.Color(255, 255, 255));
+        ordersButton1.setText("Orders");
+        ordersButton1.setMaximumSize(new java.awt.Dimension(160, 35));
+        ordersButton1.setPreferredSize(new java.awt.Dimension(100, 27));
+        ordersButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ordersButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout navPanelLayout = new javax.swing.GroupLayout(navPanel);
         navPanel.setLayout(navPanelLayout);
         navPanelLayout.setHorizontalGroup(
@@ -157,12 +173,13 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
                 .addGroup(navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(viewSalesReportsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                     .addComponent(categorieButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ordersButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(placeOrderButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(logOutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(itemButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(inventoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(customerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(customerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ordersButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(186, 186, 186))
         );
         navPanelLayout.setVerticalGroup(
@@ -173,7 +190,9 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(viewSalesReportsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(ordersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(placeOrderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(ordersButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(customerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -182,7 +201,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
                 .addComponent(itemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(categorieButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
                 .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -214,9 +233,9 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
         loadForm(new ManageCategories());
     }//GEN-LAST:event_categorieButtonActionPerformed
 
-    private void ordersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersButtonActionPerformed
-        loadForm(new ManageEmployees());
-    }//GEN-LAST:event_ordersButtonActionPerformed
+    private void placeOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placeOrderButtonActionPerformed
+        loadForm(new PlaceOrderPanel());
+    }//GEN-LAST:event_placeOrderButtonActionPerformed
 
     private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
         // Clear the session and redirect to login screen
@@ -237,6 +256,11 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
     private void customerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerButtonActionPerformed
         loadForm(new ManageCustomers());
     }//GEN-LAST:event_customerButtonActionPerformed
+
+    private void ordersButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersButton1ActionPerformed
+        User currentUser = SessionManager.getCurrentUser();
+        loadForm(new EmployeeOrderHistoryPanel(currentUser.getUserId()));
+    }//GEN-LAST:event_ordersButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -285,7 +309,8 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
     private javax.swing.JButton logOutButton;
     private javax.swing.JLabel logo;
     private javax.swing.JPanel navPanel;
-    private javax.swing.JButton ordersButton;
+    private javax.swing.JButton ordersButton1;
+    private javax.swing.JButton placeOrderButton;
     private javax.swing.JButton viewSalesReportsButton;
     // End of variables declaration//GEN-END:variables
 }

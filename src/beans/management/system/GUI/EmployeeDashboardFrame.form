@@ -54,12 +54,13 @@
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="viewSalesReportsButton" pref="160" max="32767" attributes="0"/>
                       <Component id="categorieButton" alignment="0" max="32767" attributes="0"/>
-                      <Component id="ordersButton" alignment="0" max="32767" attributes="0"/>
+                      <Component id="placeOrderButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="logo" alignment="0" max="32767" attributes="0"/>
                       <Component id="logOutButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="itemButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="inventoryButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="customerButton" alignment="0" max="32767" attributes="0"/>
+                      <Component id="ordersButton1" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="186" max="-2" attributes="0"/>
               </Group>
@@ -73,7 +74,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="viewSalesReportsButton" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="ordersButton" min="-2" pref="35" max="-2" attributes="0"/>
+                  <Component id="placeOrderButton" min="-2" pref="35" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="ordersButton1" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="customerButton" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -82,7 +85,7 @@
                   <Component id="itemButton" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="categorieButton" min="-2" pref="35" max="-2" attributes="0"/>
-                  <EmptySpace pref="188" max="32767" attributes="0"/>
+                  <EmptySpace pref="135" max="32767" attributes="0"/>
                   <Component id="logOutButton" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
@@ -121,7 +124,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewSalesReportsButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="ordersButton">
+        <Component class="javax.swing.JButton" name="placeOrderButton">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="a" green="2e" red="4d" type="rgb"/>
@@ -132,7 +135,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Orders"/>
+            <Property name="text" type="java.lang.String" value="Place Order"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[160, 35]"/>
             </Property>
@@ -141,7 +144,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ordersButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="placeOrderButtonActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="categorieButton">
@@ -251,6 +254,29 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="customerButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="ordersButton1">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="a" green="2e" red="4d" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Orders"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[160, 35]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[100, 27]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ordersButton1ActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

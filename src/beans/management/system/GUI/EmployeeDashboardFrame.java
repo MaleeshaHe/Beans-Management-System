@@ -235,7 +235,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_inventoryButtonActionPerformed
 
     private void customerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerButtonActionPerformed
-        // TODO add your handling code here:
+        loadForm(new ManageCustomers());
     }//GEN-LAST:event_customerButtonActionPerformed
 
     /**

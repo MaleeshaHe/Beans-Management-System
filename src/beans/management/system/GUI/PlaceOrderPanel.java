@@ -223,6 +223,7 @@ public class PlaceOrderPanel extends JPanel {
 
         buttonPanel.add(placeOrderButton);
         buttonPanel.add(clearButton);
+        buttonPanel.setBackground(Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2; // Make the button panel span both columns

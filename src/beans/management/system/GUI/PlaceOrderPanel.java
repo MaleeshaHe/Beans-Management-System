@@ -28,7 +28,7 @@ public class PlaceOrderPanel extends JPanel {
     private DefaultTableModel itemsTableModel, selectedItemsTableModel;
     private JComboBox<Customer> customersDropdown;
     private JComboBox<Promotion> promotionsDropdown;
-    private JButton placeOrderButton;
+    private JButton placeOrderButton, clearButton;
     private JLabel totalLabel, discountLabel, finalTotalLabel;
     private ItemDAO itemDAO;
     private OrderDAO orderDAO;
@@ -201,7 +201,8 @@ public class PlaceOrderPanel extends JPanel {
         gbc.gridx = 1;
         bottomPanel.add(finalTotalLabel, gbc);
 
-        // Place Order Button
+        // Place Order Button and Clear Button in the same line
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10)); // FlowLayout for horizontal alignment
         placeOrderButton = new JButton("Place Order");
         placeOrderButton.addActionListener(new ActionListener() {
             @Override
@@ -210,10 +211,22 @@ public class PlaceOrderPanel extends JPanel {
             }
         });
         styleButton(placeOrderButton);
+
+        clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetForm();
+            }
+        });
+        styleButton(clearButton);
+
+        buttonPanel.add(placeOrderButton);
+        buttonPanel.add(clearButton);
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 2; // Make the button span both columns
-        bottomPanel.add(placeOrderButton, gbc);
+        gbc.gridwidth = 2; // Make the button panel span both columns
+        bottomPanel.add(buttonPanel, gbc);
 
         // Adjust the bottom panel size and add to the right panel
         rightPanel.add(bottomPanel, BorderLayout.SOUTH);
@@ -369,6 +382,6 @@ public class PlaceOrderPanel extends JPanel {
         button.setBackground(new Color(77, 46, 10));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        button.setPreferredSize(new Dimension(150, 40));
+        button.setPreferredSize(new Dimension(130, 30));
     }
 }

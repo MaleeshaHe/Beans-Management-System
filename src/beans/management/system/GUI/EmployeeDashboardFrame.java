@@ -20,7 +20,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
         initComponents();
         cardLayout = new java.awt.CardLayout();
         contentPanel.setLayout(cardLayout);
-        loadForm(new CreatePromotion());
+        loadForm(new ViewSalesReports());
         
         // Check if user is logged in, otherwise redirect to login screen
         if (!SessionManager.isLoggedIn()) {

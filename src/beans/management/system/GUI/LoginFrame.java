@@ -197,9 +197,9 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        //loginAction();
-        new EmployeeDashboardFrame().setVisible(true);
-        this.setVisible(false);
+        loginAction();
+        //new EmployeeDashboardFrame().setVisible(true);
+        //this.setVisible(false);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     /**

@@ -3,6 +3,10 @@ package beans.management.system.GUI;
 import javax.swing.*;
 import java.awt.*;
 import beans.management.system.DAO.OrderDAO;
+import org.jfree.chart.*;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 public class ViewSalesReports extends JPanel {
 
@@ -10,26 +14,43 @@ public class ViewSalesReports extends JPanel {
 
     public ViewSalesReports() {
         setLayout(new BorderLayout());
-        setBackground(new Color(250, 250, 250));  // Light background color
-
-        // Header label for the panel
-        JLabel label = new JLabel("Sales Reports", JLabel.CENTER);
-        label.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        label.setForeground(new Color(77, 46, 10));  // Dark brown color
-        add(label, BorderLayout.NORTH);
+        setBackground(new Color(240, 240, 240));  // Light background color
 
         // Initialize the DAO class for accessing data
         orderDAO = new OrderDAO();
 
-        // Create a panel to display the statistics
+        // Header label for the entire panel
+        JLabel label = new JLabel("Sales Reports", JLabel.CENTER);
+        label.setFont(new Font("Segoe UI", Font.BOLD, 24));  // Larger font size for the title
+        label.setForeground(new Color(77, 46, 10));  // Dark brown color
+        label.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));  // Padding around title
+        add(label, BorderLayout.NORTH);  // Add the heading at the top
+
+        // Create a panel for charts with 2x2 grid layout
+        JPanel chartPanel = new JPanel();
+        chartPanel.setLayout(new GridLayout(2, 2, 10, 10));  // 2 rows, 2 columns with 10px gap between components
+        chartPanel.add(createChartPanel());  // Bar Chart (Sales by Day)
+        chartPanel.add(createLineChartPanel());  // Line Chart (Revenue Over Time)
+        chartPanel.add(createSalesCategoryPieChartPanel());  // Pie Chart (Sales Categories)
+        chartPanel.add(createBarChartByRegionPanel());  // Bar Chart (Orders by Region)
+        chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));  // Padding around chart panel
+        add(chartPanel, BorderLayout.CENTER);  // Add chartPanel in the center part of the layout
+
+        // Create a panel for statistics (cards) and place it below the chartPanel
+        JPanel statsPanel = createStatsPanel();
+        add(statsPanel, BorderLayout.SOUTH);  // Add statsPanel to the bottom part of the layout
+    }
+
+    // Create and return a panel for statistics with larger cards, center-aligned
+    private JPanel createStatsPanel() {
         JPanel statsPanel = new JPanel();
-        statsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));  // FlowLayout for fixed placement of cards
-        statsPanel.setBackground(new Color(250, 250, 250));
+        statsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));  // Center-align the cards with reduced gaps
+        statsPanel.setBackground(new Color(240, 240, 240));
 
         // Set a fixed height for statsPanel using setPreferredSize
-        statsPanel.setPreferredSize(new Dimension(1100, 180)); // Fixed height and width (adjust as needed)
+        statsPanel.setPreferredSize(new Dimension(900, 200)); // Adjusted size to minimize extra space
 
-        // Create small rounded cards for each statistic
+        // Create larger rounded cards for each statistic
         JPanel totalOrdersCard = createStatsCard("Total Orders", String.valueOf(orderDAO.getTotalOrders()));
         JPanel totalRevenueCard = createStatsCard("Total Revenue (SAR)", String.format("%.2f", orderDAO.getTotalRevenue()));
         JPanel avgOrderValueCard = createStatsCard("Avg Order Value (SAR)", String.format("%.2f", orderDAO.getTotalRevenue() / orderDAO.getTotalOrders()));
@@ -45,40 +66,39 @@ public class ViewSalesReports extends JPanel {
         statsPanel.add(ordersPerCustomerCard);
         statsPanel.add(ordersPerDayCard);
 
-        // Add the stats panel to the main panel
-        add(statsPanel, BorderLayout.CENTER);
+        // Reduced top and bottom padding to eliminate extra space
+        statsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));  // Reduced top and bottom padding
 
-        // Style the panel with padding and borders
-        statsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        return statsPanel;
     }
 
-    // Helper method to create smaller stats cards with rounded borders
+    // Helper method to create larger stats cards with rounded borders and shadow effect
     private JPanel createStatsCard(String title, String value) {
         JPanel cardPanel = new JPanel();
         cardPanel.setLayout(new BorderLayout());
         cardPanel.setBackground(new Color(255, 255, 255));  // White background for cards
-        cardPanel.setPreferredSize(new Dimension(150, 60));  // Further reduced card size (smaller width & height)
+        cardPanel.setPreferredSize(new Dimension(150, 80));  // Slightly reduced size for cards to fit better
         cardPanel.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true));  // Light gray border with rounded corners
-        cardPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Padding inside the card
+        cardPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding inside the card
 
         // Title Label
         JLabel titleLabel = new JLabel(title, JLabel.CENTER);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));  // Smaller font size for title
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));  // Font size increased for title
         titleLabel.setForeground(new Color(77, 46, 10));  // Dark brown color
 
         // Value Label
         JLabel valueLabel = new JLabel(value, JLabel.CENTER);
-        valueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));  // Slightly larger font for the value
+        valueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));  // Increased font size for the value
         valueLabel.setForeground(new Color(77, 46, 10));  // Dark brown color
 
         // Adding components to the card
         cardPanel.add(titleLabel, BorderLayout.NORTH);
         cardPanel.add(valueLabel, BorderLayout.CENTER);
 
-        // Rounded corners
+        // Rounded corners with shadow effect
         cardPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true), 
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)  // Adding padding
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)  // Increased padding
         ));
 
         // Adding hover effect (mouse listener)
@@ -97,5 +117,100 @@ public class ViewSalesReports extends JPanel {
         });
 
         return cardPanel;
+    }
+
+    // Method to create and return a bar chart panel for sales by day
+    private JPanel createChartPanel() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        // Adding daily sales data (Replace with actual data from orderDAO)
+        dataset.addValue(100, "Orders", "Day 1");
+        dataset.addValue(150, "Orders", "Day 2");
+        dataset.addValue(200, "Orders", "Day 3");
+        dataset.addValue(250, "Orders", "Day 4");
+
+        JFreeChart barChart = ChartFactory.createBarChart(
+                "Sales by Day",  // Chart title
+                "Day",  // X-Axis Label
+                "Orders",  // Y-Axis Label
+                dataset,  // Dataset
+                PlotOrientation.VERTICAL,
+                true,  // Show legend
+                true,  // Show tooltips
+                false  // No URLs
+        );
+
+        ChartPanel chartPanel = new ChartPanel(barChart);
+        chartPanel.setPreferredSize(new Dimension(200, 130)); // Slightly reduced size for chart
+        return chartPanel;
+    }
+
+    // Method to create and return a line chart panel for revenue over time
+    private JPanel createLineChartPanel() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        // Adding sample data (Replace with actual data from orderDAO)
+        dataset.addValue(1000, "Revenue", "Day 1");
+        dataset.addValue(1500, "Revenue", "Day 2");
+        dataset.addValue(1800, "Revenue", "Day 3");
+        dataset.addValue(2200, "Revenue", "Day 4");
+
+        JFreeChart lineChart = ChartFactory.createLineChart(
+                "Revenue Over Time",  // Chart title
+                "Day",  // X-Axis Label
+                "Revenue (SAR)",  // Y-Axis Label
+                dataset,  // Dataset
+                PlotOrientation.VERTICAL,
+                true,  // Show legend
+                true,  // Show tooltips
+                false  // No URLs
+        );
+
+        ChartPanel chartPanel = new ChartPanel(lineChart);
+        chartPanel.setPreferredSize(new Dimension(200, 130)); // Slightly reduced size for chart
+        return chartPanel;
+    }
+
+    // Method to create and return a pie chart panel for sales categories (e.g., Product Sales, Service Sales)
+    private JPanel createSalesCategoryPieChartPanel() {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        // Adding sales category data (Replace with actual data from orderDAO)
+        dataset.setValue("Product Sales", 40);
+        dataset.setValue("Service Sales", 60);
+
+        JFreeChart pieChart = ChartFactory.createPieChart(
+                "Sales Categories",  // Chart title
+                dataset,  // Dataset
+                true,  // Include legend
+                true,  // Show tooltips
+                false  // No URLs
+        );
+
+        ChartPanel chartPanel = new ChartPanel(pieChart);
+        chartPanel.setPreferredSize(new Dimension(200, 130)); // Slightly reduced size for chart
+        return chartPanel;
+    }
+
+    // Method to create and return a bar chart panel for orders by region
+    private JPanel createBarChartByRegionPanel() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        // Adding sample data (Replace with actual data from orderDAO)
+        dataset.addValue(120, "Orders", "North");
+        dataset.addValue(150, "Orders", "South");
+        dataset.addValue(180, "Orders", "East");
+        dataset.addValue(100, "Orders", "West");
+
+        JFreeChart barChart = ChartFactory.createBarChart(
+                "Orders by Region",  // Chart title
+                "Region",  // X-Axis Label
+                "Orders",  // Y-Axis Label
+                dataset,  // Dataset
+                PlotOrientation.VERTICAL,
+                true,  // Show legend
+                true,  // Show tooltips
+                false  // No URLs
+        );
+
+        ChartPanel chartPanel = new ChartPanel(barChart);
+        chartPanel.setPreferredSize(new Dimension(200, 130)); // Slightly reduced size for chart
+        return chartPanel;
     }
 }

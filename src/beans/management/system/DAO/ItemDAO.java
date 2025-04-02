@@ -143,6 +143,24 @@ public class ItemDAO {
 
         return item;
     }
+    
+        public List<String> getTopSellingItems() {
+        // SQL query to get the top selling items
+        String query = "SELECT item_name FROM items ORDER BY sales_count DESC LIMIT 5";
+        // Implement database query and return the result as a list of item names
+        return executeQuery(query);
+    }
+
+    private List<String> executeQuery(String query) {
+        // Mock implementation: In a real scenario, you would interact with the database
+        List<String> topItems = new ArrayList<>();
+        topItems.add("Espresso");
+        topItems.add("Bagel");
+        topItems.add("Smoothie");
+        topItems.add("Cake");
+        topItems.add("Saudi Coffee");
+        return topItems;
+    }
 
 
 }

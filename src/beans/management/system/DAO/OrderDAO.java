@@ -110,4 +110,83 @@ public class OrderDAO {
         }
         return success;
     }
+    
+        // Method to get the total number of orders
+    public int getTotalOrders() {
+        String query = "SELECT COUNT(*) FROM orders";  // SQL query to get the count of orders
+        int totalOrders = 0;
+        
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                totalOrders = resultSet.getInt(1);  // Get the count from the first column
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return totalOrders;
+    }
+
+    // Method to get the total revenue
+    public double getTotalRevenue() {
+        String query = "SELECT SUM(total_amount) FROM orders";  // SQL query to get the total revenue
+        double totalRevenue = 0.0;
+        
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                totalRevenue = resultSet.getDouble(1);  // Get the sum from the first column
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return totalRevenue;
+    }
+   
+
+    // Method to get the total number of customers who placed orders
+    public int getTotalCustomers() {
+        String query = "SELECT COUNT(DISTINCT customer_id) FROM orders";
+        return executeQuery(query);
+    }
+
+    // Method to get the total orders per day (example query for today’s orders)
+    public int getTotalOrdersPerDay() {
+        String query = "SELECT COUNT(*) FROM orders WHERE DATE(order_date) = CURDATE()"; // Assuming 'order_date' is the field in orders table
+        return executeQuery(query);
+    }
+
+    // Helper method to execute the query and return an integer result
+    private int executeQuery(String query) {
+        int result = 0;
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                result = rs.getInt(1);  // Get the count result
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // Helper method to execute the query for total revenue and return a double result
+    private double executeQueryForRevenue(String query) {
+        double result = 0.0;
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                result = rs.getDouble(1);  // Get the revenue result
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

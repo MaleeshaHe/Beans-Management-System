@@ -42,11 +42,21 @@ public class PlaceOrderPanel extends JPanel {
     public PlaceOrderPanel() {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding around the content
 
         itemDAO = new ItemDAO();
         orderDAO = new OrderDAO();
         customerDAO = new CustomerDAO();
         promotionDAO = new PromotionDAO();
+
+        // Page Heading
+        JPanel headingPanel = new JPanel();
+        headingPanel.setBackground(Color.WHITE);
+        JLabel pageHeading = new JLabel("Place Order", JLabel.CENTER);
+        pageHeading.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        pageHeading.setForeground(new Color(77, 46, 10));
+        headingPanel.add(pageHeading);
+        add(headingPanel, BorderLayout.NORTH);
 
         // Split layout: Left side for items, right side for order summary and customer/promotion
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -56,6 +66,14 @@ public class PlaceOrderPanel extends JPanel {
         // Left panel for items table
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(Color.WHITE);
+        
+        // Header label for items table
+        JLabel itemsHeader = new JLabel("Select Items to Order", JLabel.CENTER);
+        itemsHeader.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        itemsHeader.setForeground(new Color(77, 46, 10));
+        itemsHeader.setPreferredSize(new Dimension(600, 40));
+        leftPanel.add(itemsHeader, BorderLayout.NORTH);
+        
         String[] itemColumns = {"Item Name", "Price (SAR)", "Description", "Quantity"};
         itemsTableModel = new DefaultTableModel(itemColumns, 0) {
             @Override
@@ -66,8 +84,18 @@ public class PlaceOrderPanel extends JPanel {
         itemsTable = new JTable(itemsTableModel);
         itemsTable.setRowHeight(30);
         itemsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        itemsTable.setSelectionBackground(new Color(77, 46, 10));  // Highlight selected rows with the same color as buttons
+        itemsTable.setSelectionForeground(Color.WHITE); // Text color for selected row
+
+        // Set table header styles
+        itemsTable.getTableHeader().setBackground(new Color(77, 46, 10)); // Header background color
+        itemsTable.getTableHeader().setForeground(Color.WHITE); // Header text color
+        itemsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14)); // Header font style
+        
         JScrollPane itemScrollPane = new JScrollPane(itemsTable);
+        itemScrollPane.setPreferredSize(new Dimension(600, 250));  // Set fixed height for table
         leftPanel.add(itemScrollPane, BorderLayout.CENTER);
+        
         loadItems();
         itemsTable.addMouseListener(new MouseAdapter() {
             @Override
@@ -81,8 +109,16 @@ public class PlaceOrderPanel extends JPanel {
         // Right panel for selected items and details
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BorderLayout());
+        
         JPanel rightTopPanel = new JPanel();
         rightTopPanel.setLayout(new GridLayout(3, 2, 10, 10));
+
+        // Header label for the right panel
+        JLabel rightHeader = new JLabel("Order Summary", JLabel.CENTER);
+        rightHeader.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        rightHeader.setForeground(new Color(77, 46, 10));
+        rightHeader.setPreferredSize(new Dimension(600, 40));
+        rightPanel.add(rightHeader, BorderLayout.NORTH);
 
         // Customer Dropdown
         rightTopPanel.add(new JLabel("Select Customer:"));
@@ -109,17 +145,51 @@ public class PlaceOrderPanel extends JPanel {
         selectedItemsTable = new JTable(selectedItemsTableModel);
         selectedItemsTable.setRowHeight(30);
         selectedItemsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        selectedItemsTable.setSelectionBackground(new Color(77, 46, 10));
+        selectedItemsTable.setSelectionForeground(Color.WHITE);
+
+        // Set table header styles for selected items table
+        selectedItemsTable.getTableHeader().setBackground(new Color(77, 46, 10));
+        selectedItemsTable.getTableHeader().setForeground(Color.WHITE);
+        selectedItemsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+
         JScrollPane selectedItemsScrollPane = new JScrollPane(selectedItemsTable);
+        selectedItemsScrollPane.setPreferredSize(new Dimension(600, 250));  // Set fixed height for table
         rightPanel.add(selectedItemsScrollPane, BorderLayout.CENTER);
 
         // Bottom panel for discount and final total
-        JPanel bottomPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-        bottomPanel.add(new JLabel("Discount (SAR):"));
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);  // Add padding between elements
+        gbc.anchor = GridBagConstraints.WEST;
+        bottomPanel.setBackground(Color.WHITE);
+
+        // Discount Label
+        JLabel discountLabelTitle = new JLabel("Discount (SAR):");
+        discountLabelTitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        discountLabelTitle.setForeground(new Color(77, 46, 10));
         discountLabel = new JLabel("SAR 0.00");
-        bottomPanel.add(discountLabel);
-        bottomPanel.add(new JLabel("Final Total (SAR):"));
+        discountLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        discountLabel.setForeground(new Color(77, 46, 10));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        bottomPanel.add(discountLabelTitle, gbc);
+        gbc.gridx = 1;
+        bottomPanel.add(discountLabel, gbc);
+
+        // Final Total Label
+        JLabel finalTotalLabelTitle = new JLabel("Final Total (SAR):");
+        finalTotalLabelTitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        finalTotalLabelTitle.setForeground(new Color(77, 46, 10));
         finalTotalLabel = new JLabel("SAR 0.00");
-        bottomPanel.add(finalTotalLabel);
+        finalTotalLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        finalTotalLabel.setForeground(new Color(77, 46, 10));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        bottomPanel.add(finalTotalLabelTitle, gbc);
+        gbc.gridx = 1;
+        bottomPanel.add(finalTotalLabel, gbc);
 
         // Place Order Button
         placeOrderButton = new JButton("Place Order");
@@ -130,7 +200,13 @@ public class PlaceOrderPanel extends JPanel {
             }
         });
         styleButton(placeOrderButton);
-        bottomPanel.add(placeOrderButton);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2; // Make the button span both columns
+        bottomPanel.add(placeOrderButton, gbc);
+
+        // Adjust the bottom panel size and add to the right panel
+        rightPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         rightPanel.add(bottomPanel, BorderLayout.SOUTH);
 

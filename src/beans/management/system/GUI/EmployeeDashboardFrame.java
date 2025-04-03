@@ -167,7 +167,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
         receiptButton.setBackground(new java.awt.Color(77, 46, 10));
         receiptButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         receiptButton.setForeground(new java.awt.Color(255, 255, 255));
-        receiptButton.setText("Receipts");
+        receiptButton.setText("View Bills");
         receiptButton.setMaximumSize(new java.awt.Dimension(160, 35));
         receiptButton.setPreferredSize(new java.awt.Dimension(100, 27));
         receiptButton.addActionListener(new java.awt.event.ActionListener() {

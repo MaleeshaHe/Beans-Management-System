@@ -1,6 +1,9 @@
 package beans.management.system.GUI;
 
 import beans.management.system.Model.User;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import utils.SessionManager;
@@ -278,7 +281,11 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_ordersButton1ActionPerformed
 
     private void receiptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receiptButtonActionPerformed
-        loadForm(new ManageBills());
+        try {
+            loadForm(new ManageBills());
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDashboardFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_receiptButtonActionPerformed
 
     /**

@@ -3,9 +3,13 @@ package beans.management.system.GUI;
 import beans.management.system.DAO.BillDAO;
 import beans.management.system.Model.Bill;
 import beans.management.system.Model.BillItem;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -16,7 +20,7 @@ public class ManageBills extends JPanel {
 
     private JTable billsTable;
     private DefaultTableModel tableModel;
-    private JButton viewBillButton, generateReceiptButton;
+    private JButton viewBillButton, generateReceiptButton, generatePDFButton;
     private BillDAO billDAO;
 
     public ManageBills() throws SQLException {
@@ -33,23 +37,23 @@ public class ManageBills extends JPanel {
 
         // Customize JTable appearance for bills
         billsTable.setBackground(Color.WHITE); // Set background to white
-        billsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12)); // Set font to Segoe UI, 12pt
+        billsTable.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12)); // Set font for JTable
         billsTable.setRowHeight(30); // Set row height for better readability
         billsTable.getTableHeader().setBackground(new Color(77, 46, 10)); // Set header background color
         billsTable.getTableHeader().setForeground(Color.WHITE); // Set header text color
-        billsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set header font
+        billsTable.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12)); // Set header font
 
         JScrollPane billsScrollPane = new JScrollPane(billsTable);
         add(billsScrollPane, BorderLayout.CENTER);
 
         // Create and add header label before the table
         JLabel headerLabel = new JLabel("Bill Management", JLabel.CENTER);
-        headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        headerLabel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16));
         headerLabel.setForeground(new Color(77, 46, 10));  // Set header text color
         headerLabel.setPreferredSize(new Dimension(600, 40));  // Set height for header
         add(headerLabel, BorderLayout.NORTH);  // Add the header label to the north of the panel
 
-        // Create button panel for "View Bill" and "Generate Receipt"
+        // Create button panel for "View Bill", "Generate Receipt", and "Generate PDF"
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setBackground(Color.WHITE);  // Set background to white
@@ -62,7 +66,7 @@ public class ManageBills extends JPanel {
                 try {
                     viewBillDetails();
                 } catch (SQLException ex) {
-                    Logger.getLogger(ManageBills.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
             }
         });
@@ -77,12 +81,29 @@ public class ManageBills extends JPanel {
                 try {
                     generateReceipt();
                 } catch (SQLException ex) {
-                    Logger.getLogger(ManageBills.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
             }
         });
         styleButton(generateReceiptButton);  // Apply style to button
         buttonPanel.add(generateReceiptButton);
+
+        // Generate PDF Button
+        generatePDFButton = new JButton("Generate PDF");
+        generatePDFButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    generatePDF();
+                } catch (DocumentException | FileNotFoundException ex) {
+                    ex.printStackTrace();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ManageBills.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        styleButton(generatePDFButton);  // Apply style to button
+        buttonPanel.add(generatePDFButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -166,11 +187,54 @@ public class ManageBills extends JPanel {
         }
     }
 
+    // Generate PDF for the selected bill
+    private void generatePDF() throws DocumentException, FileNotFoundException, SQLException {
+        int selectedRow = billsTable.getSelectedRow();
+        if (selectedRow != -1) {
+            int orderId = (int) tableModel.getValueAt(selectedRow, 0);
+            Bill bill = billDAO.generateBill(orderId);
+
+            if (bill != null) {
+                // Creating a new Document
+                Document document = new Document();
+                String fileName = "Bill_" + bill.getOrderId() + ".pdf";
+                PdfWriter.getInstance(document, new FileOutputStream(fileName));
+
+                // Open the document for writing
+                document.open();
+
+                // Add content to the document
+                document.add(new Paragraph("Bill ID: " + bill.getOrderId()));
+                document.add(new Paragraph("Customer: " + bill.getCustomerName()));
+                document.add(new Paragraph("Bill Date: " + bill.getOrderDate()));
+                document.add(new Paragraph("Total Amount: " + bill.getTotalAmount()));
+                document.add(new Paragraph("Payment Method: " + bill.getPaymentMethod()));
+                document.add(new Paragraph("\nItems:"));
+                for (BillItem item : bill.getItems()) {
+                    document.add(new Paragraph("Item: " + item.getItemName() + ", Quantity: " + item.getQuantity() +
+                            ", Total: " + item.getItemTotal()));
+                }
+
+                // Close the document
+                document.close();
+
+                // Show confirmation dialog
+                JOptionPane.showMessageDialog(this, "Bill PDF generated successfully: " + fileName);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error generating PDF.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a bill to generate PDF.");
+        }
+    }
+    
+    
+
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {
         button.setBackground(new Color(77, 46, 10)); // Set the background color of the button
         button.setForeground(Color.WHITE); // Set the text color to white
-        button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font to Segoe UI, 12 pt, Bold
+        //button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font to Segoe UI, 12 pt, Bold
     }
 
     public static void main(String[] args) throws SQLException {

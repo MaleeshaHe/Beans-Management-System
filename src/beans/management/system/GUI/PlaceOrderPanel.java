@@ -28,8 +28,8 @@ public class PlaceOrderPanel extends JPanel {
     private DefaultTableModel itemsTableModel, selectedItemsTableModel;
     private JComboBox<Customer> customersDropdown;
     private JComboBox<Promotion> promotionsDropdown;
-    private JButton placeOrderButton, clearButton;
-    private JLabel totalLabel, discountLabel, finalTotalLabel;
+    private JButton placeOrderButton, clearButton, addCustomerButton;
+    private JLabel totalLabel, discountLabel, finalTotalLabel, employeeLabel;
     private ItemDAO itemDAO;
     private OrderDAO orderDAO;
     private CustomerDAO customerDAO;
@@ -43,7 +43,7 @@ public class PlaceOrderPanel extends JPanel {
     public PlaceOrderPanel() {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding around the content
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         itemDAO = new ItemDAO();
         orderDAO = new OrderDAO();
@@ -85,23 +85,22 @@ public class PlaceOrderPanel extends JPanel {
         itemsTable = new JTable(itemsTableModel);
         itemsTable.setRowHeight(30);
         itemsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        itemsTable.setSelectionBackground(new Color(8, 103, 147));  // Highlight selected rows with the same color as buttons
-        itemsTable.setSelectionForeground(Color.WHITE); // Text color for selected row
+        itemsTable.setSelectionBackground(new Color(8, 103, 147));
+        itemsTable.setSelectionForeground(Color.WHITE);
 
-        // Set table header styles
-        itemsTable.getTableHeader().setBackground(new Color(8, 103, 147)); // Header background color
-        itemsTable.getTableHeader().setForeground(Color.WHITE); // Header text color
-        itemsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14)); // Header font style
+        itemsTable.getTableHeader().setBackground(new Color(8, 103, 147));
+        itemsTable.getTableHeader().setForeground(Color.WHITE);
+        itemsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         JScrollPane itemScrollPane = new JScrollPane(itemsTable);
-        itemScrollPane.setPreferredSize(new Dimension(600, 250));  // Set fixed height for table
+        itemScrollPane.setPreferredSize(new Dimension(600, 250));
         leftPanel.add(itemScrollPane, BorderLayout.CENTER);
 
         loadItems();
         itemsTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) { // Double-click to add item to order list
+                if (e.getClickCount() == 2) {
                     addItemToOrder();
                 }
             }
@@ -112,9 +111,8 @@ public class PlaceOrderPanel extends JPanel {
         rightPanel.setLayout(new BorderLayout());
 
         JPanel rightTopPanel = new JPanel();
-        rightTopPanel.setLayout(new GridLayout(3, 2, 10, 10));
+        rightTopPanel.setLayout(new GridLayout(4, 2, 10, 10));
 
-        // Header label for the right panel
         JLabel rightHeader = new JLabel("Order Summary", JLabel.CENTER);
         rightHeader.setFont(new Font("Segoe UI", Font.BOLD, 16));
         rightHeader.setForeground(new Color(8, 103, 147));
@@ -126,17 +124,37 @@ public class PlaceOrderPanel extends JPanel {
         customersDropdown = new JComboBox<>();
         loadCustomers();
         rightTopPanel.add(customersDropdown);
-
+        
         // Promotion Dropdown
         rightTopPanel.add(new JLabel("Select Promotion:"));
         promotionsDropdown = new JComboBox<>();
         loadPromotions();
         rightTopPanel.add(promotionsDropdown);
+        
+        // Employee Name Label
+        employeeLabel = new JLabel("Employee: ");
+        rightTopPanel.add(employeeLabel);
+        
+        User currentUser = SessionManager.getCurrentUser();
+        String employeeName = currentUser.getFirstName() + " " + currentUser.getLastName();
+        employeeLabel.setText("Employee: " + employeeName);
+
 
         // Total Labels
         rightTopPanel.add(new JLabel("Total Amount (SAR):"));
         totalLabel = new JLabel("SAR 0.00");
         rightTopPanel.add(totalLabel);
+        
+        // Add Customer Button
+        addCustomerButton = new JButton("Add Customer");
+        addCustomerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addCustomer();
+            }
+        });
+        styleButton(addCustomerButton);
+        rightTopPanel.add(addCustomerButton);
 
         rightPanel.add(rightTopPanel, BorderLayout.NORTH);
 
@@ -148,7 +166,6 @@ public class PlaceOrderPanel extends JPanel {
         tableHeader.setPreferredSize(new Dimension(600, 40));
         tableHeaderPanel.add(tableHeader, BorderLayout.NORTH);
 
-        // Table for selected items (Right Side)
         String[] selectedItemColumns = {"Item Name", "Price (SAR)", "Quantity", "Total (SAR)"};
         selectedItemsTableModel = new DefaultTableModel(selectedItemColumns, 0);
         selectedItemsTable = new JTable(selectedItemsTableModel);
@@ -157,13 +174,12 @@ public class PlaceOrderPanel extends JPanel {
         selectedItemsTable.setSelectionBackground(new Color(8, 103, 147));
         selectedItemsTable.setSelectionForeground(Color.WHITE);
 
-        // Set table header styles for selected items table
         selectedItemsTable.getTableHeader().setBackground(new Color(8, 103, 147));
         selectedItemsTable.getTableHeader().setForeground(Color.WHITE);
         selectedItemsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
 
         JScrollPane selectedItemsScrollPane = new JScrollPane(selectedItemsTable);
-        selectedItemsScrollPane.setPreferredSize(new Dimension(600, 250));  // Set fixed height for table
+        selectedItemsScrollPane.setPreferredSize(new Dimension(600, 250));
         tableHeaderPanel.add(selectedItemsScrollPane, BorderLayout.CENTER);
         rightPanel.add(tableHeaderPanel, BorderLayout.CENTER);
 
@@ -171,11 +187,10 @@ public class PlaceOrderPanel extends JPanel {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);  // Add padding between elements
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.WEST;
         bottomPanel.setBackground(Color.WHITE);
 
-        // Discount Label
         JLabel discountLabelTitle = new JLabel("Discount (SAR):");
         discountLabelTitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         discountLabelTitle.setForeground(new Color(8, 103, 147));
@@ -188,7 +203,6 @@ public class PlaceOrderPanel extends JPanel {
         gbc.gridx = 1;
         bottomPanel.add(discountLabel, gbc);
 
-        // Final Total Label
         JLabel finalTotalLabelTitle = new JLabel("Final Total (SAR):");
         finalTotalLabelTitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         finalTotalLabelTitle.setForeground(new Color(8, 103, 147));
@@ -202,7 +216,7 @@ public class PlaceOrderPanel extends JPanel {
         bottomPanel.add(finalTotalLabel, gbc);
 
         // Place Order Button and Clear Button in the same line
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10)); // FlowLayout for horizontal alignment
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         placeOrderButton = new JButton("Place Order");
         placeOrderButton.addActionListener(new ActionListener() {
             @Override
@@ -226,10 +240,9 @@ public class PlaceOrderPanel extends JPanel {
         buttonPanel.setBackground(Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 2; // Make the button panel span both columns
+        gbc.gridwidth = 2;
         bottomPanel.add(buttonPanel, gbc);
 
-        // Adjust the bottom panel size and add to the right panel
         rightPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         splitPane.setLeftComponent(leftPanel);
@@ -237,18 +250,20 @@ public class PlaceOrderPanel extends JPanel {
 
         add(splitPane, BorderLayout.CENTER);
 
-        // Method to update the discount when a promotion is selected
         promotionsDropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 selectedPromoId = ((Promotion) promotionsDropdown.getSelectedItem()).getPromotionId();
-                updateTotalAmount();  // Recalculate and update total and discount whenever promotion is changed
+                updateTotalAmount();
             }
         });
     }
 
-    // Existing code for loadItems(), loadCustomers(), loadPromotions(), updateTotalAmount(), addItemToOrder(), placeOrder(), and resetForm()
-
+    private void addCustomer() {
+        // Pop-up a dialog for adding new customer
+        new CustomerInputDialog((JFrame) SwingUtilities.getWindowAncestor(this), false, null);
+        loadCustomers();
+    }
 
     private void loadItems() {
         List<Item> items = itemDAO.getAllItems();
@@ -258,6 +273,7 @@ public class PlaceOrderPanel extends JPanel {
     }
 
     private void loadCustomers() {
+        customersDropdown.removeAllItems();
         List<Customer> customers = customerDAO.getAllCustomers();
         for (Customer customer : customers) {
             customersDropdown.addItem(customer);
@@ -273,76 +289,61 @@ public class PlaceOrderPanel extends JPanel {
 
     private void updateTotalAmount() {
         double totalAmount = 0.0;
-        // Calculate total amount for items in the order
         for (int i = 0; i < selectedItemsTableModel.getRowCount(); i++) {
             try {
-                // Get the item total price from the table (remove the "SAR " prefix)
                 String totalStr = selectedItemsTableModel.getValueAt(i, 3).toString();
-                totalStr = totalStr.replace("SAR", "").trim(); // Remove "SAR"
-                totalAmount += Double.parseDouble(totalStr);  // Add to total amount
+                totalStr = totalStr.replace("SAR", "").trim();
+                totalAmount += Double.parseDouble(totalStr);
             } catch (NumberFormatException e) {
-                e.printStackTrace();  // Handle invalid data
+                e.printStackTrace();
             }
         }
 
-        // Apply discount if promotion is selected
         if (selectedPromoId != -1) {
-            // Get selected promo code and discount percentage
             double discountPercentage = promotionDAO.getDiscountById(selectedPromoId);
             discountAmount = totalAmount * (discountPercentage / 100);
-            totalAmount -= discountAmount;  // Apply discount to total amount
+            totalAmount -= discountAmount;
         }
 
-        // Update the total amount and discount in the UI
         totalLabel.setText("SAR " + String.format("%.2f", totalAmount));
         discountLabel.setText("SAR " + String.format("%.2f", discountAmount));
         finalTotalLabel.setText("SAR " + String.format("%.2f", totalAmount));
-        this.totalAmount = totalAmount;  // Store the total amount for placing the order
+        this.totalAmount = totalAmount;
     }
 
     private void addItemToOrder() {
         int selectedRow = itemsTable.getSelectedRow();
         if (selectedRow != -1) {
-            String itemName = (String) itemsTable.getValueAt(selectedRow, 0); // Item Name
+            String itemName = (String) itemsTable.getValueAt(selectedRow, 0);
             double itemPrice = 0.0;
-
-            // Get the item price from the table (it should be a Double)
             try {
-                itemPrice = Double.parseDouble(itemsTable.getValueAt(selectedRow, 1).toString().replace("SAR", "").trim()); // Remove "SAR" and parse the price
+                itemPrice = Double.parseDouble(itemsTable.getValueAt(selectedRow, 1).toString().replace("SAR", "").trim());
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Invalid item price.");
                 return;
             }
 
-            // Get the item ID by its name
-            selectedItemId = itemDAO.getItemIdByName(itemName); // Fetch the item ID
+            selectedItemId = itemDAO.getItemIdByName(itemName);
 
             int quantity = 0;
             try {
-                quantity = Integer.parseInt(itemsTable.getValueAt(selectedRow, 3).toString()); // Fetch quantity from table
+                quantity = Integer.parseInt(itemsTable.getValueAt(selectedRow, 3).toString());
             } catch (NumberFormatException e) {
-                // Handle invalid quantity input gracefully
                 JOptionPane.showMessageDialog(this, "Please enter a valid quantity.");
                 return;
             }
 
-            // Ensure that quantity is greater than 0 before adding the item
             if (quantity > 0) {
-                // Create the OrderItem and add it to the selected items list
                 selectedItems.add(new OrderItem(0, selectedItemId, quantity));
-
-                // Add the selected item to the right table
                 selectedItemsTableModel.addRow(new Object[]{
                         itemName, "SAR " + itemPrice, quantity, "SAR " + (itemPrice * quantity)
                 });
-
                 updateTotalAmount();
             } else {
                 JOptionPane.showMessageDialog(this, "Please select a valid quantity.");
             }
         }
     }
-
 
     private void placeOrder() {
         selectedCustomerId = ((Customer) customersDropdown.getSelectedItem()).getUserId();
@@ -352,12 +353,13 @@ public class PlaceOrderPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Please add items to the order.");
             return;
         }
-        
-        User currentUser = SessionManager.getCurrentUser();
 
-        // Create Order, OrderItem, and Receipt objects
+        User currentUser = SessionManager.getCurrentUser();
+        String employeeName = currentUser.getFirstName() + " " + currentUser.getLastName();
+        employeeLabel.setText("Employee: " + employeeName);
+
         Order order = new Order(0, totalAmount, new Date(), "Placed", selectedCustomerId, currentUser.getUserId(), selectedPromoId);
-        Receipt receipt = new Receipt(0, "Cash", new Date(), totalAmount, 0);  // Use "Cash" for payment method as an example
+        Receipt receipt = new Receipt(0, "Cash", new Date(), totalAmount, 0);
 
         boolean success = orderDAO.placeOrder(order, selectedItems, receipt);
         if (success) {
@@ -378,7 +380,6 @@ public class PlaceOrderPanel extends JPanel {
         promotionsDropdown.setSelectedIndex(0);
     }
 
-    // Button styling method
     private void styleButton(JButton button) {
         button.setBackground(new Color(8, 103, 147));
         button.setForeground(Color.WHITE);

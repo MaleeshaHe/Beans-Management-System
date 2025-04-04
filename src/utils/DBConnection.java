@@ -21,8 +21,6 @@ public class DBConnection {
             // Establish the connection
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
             
-            System.out.println("Database connected successfully.");
-            
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.err.println("MySQL JDBC Driver not found.");

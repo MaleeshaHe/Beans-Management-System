@@ -74,7 +74,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
         logo.setName(""); // NOI18N
         logo.setPreferredSize(new java.awt.Dimension(100, 100));
 
-        viewSalesReportsButton.setBackground(new java.awt.Color(77, 46, 10));
+        viewSalesReportsButton.setBackground(new java.awt.Color(8, 103, 147));
         viewSalesReportsButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         viewSalesReportsButton.setForeground(new java.awt.Color(255, 255, 255));
         viewSalesReportsButton.setText("View Sales Reports");
@@ -85,7 +85,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        placeOrderButton.setBackground(new java.awt.Color(77, 46, 10));
+        placeOrderButton.setBackground(new java.awt.Color(8, 103, 147));
         placeOrderButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         placeOrderButton.setForeground(new java.awt.Color(255, 255, 255));
         placeOrderButton.setText("Place Order");
@@ -97,7 +97,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        categorieButton.setBackground(new java.awt.Color(77, 46, 10));
+        categorieButton.setBackground(new java.awt.Color(8, 103, 147));
         categorieButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         categorieButton.setForeground(new java.awt.Color(255, 255, 255));
         categorieButton.setText("Categories");
@@ -108,7 +108,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        logOutButton.setBackground(new java.awt.Color(77, 46, 10));
+        logOutButton.setBackground(new java.awt.Color(102, 102, 102));
         logOutButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         logOutButton.setForeground(new java.awt.Color(255, 255, 255));
         logOutButton.setText("Log Out");
@@ -119,7 +119,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        itemButton.setBackground(new java.awt.Color(77, 46, 10));
+        itemButton.setBackground(new java.awt.Color(8, 103, 147));
         itemButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         itemButton.setForeground(new java.awt.Color(255, 255, 255));
         itemButton.setText("Items");
@@ -131,7 +131,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        inventoryButton.setBackground(new java.awt.Color(77, 46, 10));
+        inventoryButton.setBackground(new java.awt.Color(8, 103, 147));
         inventoryButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         inventoryButton.setForeground(new java.awt.Color(255, 255, 255));
         inventoryButton.setText("Inventory");
@@ -143,7 +143,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        customerButton.setBackground(new java.awt.Color(77, 46, 10));
+        customerButton.setBackground(new java.awt.Color(8, 103, 147));
         customerButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         customerButton.setForeground(new java.awt.Color(255, 255, 255));
         customerButton.setText("Customer");
@@ -155,7 +155,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        ordersButton1.setBackground(new java.awt.Color(77, 46, 10));
+        ordersButton1.setBackground(new java.awt.Color(8, 103, 147));
         ordersButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         ordersButton1.setForeground(new java.awt.Color(255, 255, 255));
         ordersButton1.setText("Orders");
@@ -167,7 +167,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        receiptButton.setBackground(new java.awt.Color(77, 46, 10));
+        receiptButton.setBackground(new java.awt.Color(8, 103, 147));
         receiptButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         receiptButton.setForeground(new java.awt.Color(255, 255, 255));
         receiptButton.setText("View Bills");
@@ -203,7 +203,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
             .addGroup(navPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(21, 21, 21)
                 .addComponent(viewSalesReportsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(placeOrderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -219,7 +219,7 @@ public class EmployeeDashboardFrame extends javax.swing.JFrame {
                 .addComponent(itemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(categorieButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );

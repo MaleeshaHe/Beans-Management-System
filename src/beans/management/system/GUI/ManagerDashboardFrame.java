@@ -57,14 +57,14 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
 
-        navPanel.setBackground(new java.awt.Color(253, 247, 242));
+        navPanel.setBackground(new java.awt.Color(239, 239, 239));
         navPanel.setPreferredSize(new java.awt.Dimension(180, 500));
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/cafe_logo_150x150.png"))); // NOI18N
         logo.setName(""); // NOI18N
         logo.setPreferredSize(new java.awt.Dimension(100, 100));
 
-        viewSalesReportsButton.setBackground(new java.awt.Color(77, 46, 10));
+        viewSalesReportsButton.setBackground(new java.awt.Color(8, 103, 147));
         viewSalesReportsButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         viewSalesReportsButton.setForeground(new java.awt.Color(255, 255, 255));
         viewSalesReportsButton.setText("View Sales Reports");
@@ -75,7 +75,7 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        manageEmployeesButton.setBackground(new java.awt.Color(77, 46, 10));
+        manageEmployeesButton.setBackground(new java.awt.Color(8, 103, 147));
         manageEmployeesButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         manageEmployeesButton.setForeground(new java.awt.Color(255, 255, 255));
         manageEmployeesButton.setText("Manage Employees");
@@ -87,7 +87,7 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        promotionButton.setBackground(new java.awt.Color(77, 46, 10));
+        promotionButton.setBackground(new java.awt.Color(8, 103, 147));
         promotionButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         promotionButton.setForeground(new java.awt.Color(255, 255, 255));
         promotionButton.setText("Manage Promotions");
@@ -98,7 +98,7 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
             }
         });
 
-        logOutButton.setBackground(new java.awt.Color(77, 46, 10));
+        logOutButton.setBackground(new java.awt.Color(102, 102, 102));
         logOutButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         logOutButton.setForeground(new java.awt.Color(255, 255, 255));
         logOutButton.setText("Log Out");
@@ -128,13 +128,13 @@ public class ManagerDashboardFrame extends javax.swing.JFrame {
             .addGroup(navPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(27, 27, 27)
                 .addComponent(viewSalesReportsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(manageEmployeesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(promotionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
                 .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );

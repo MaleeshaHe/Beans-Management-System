@@ -67,19 +67,19 @@ public class ViewSalesReports extends JPanel {
         JPanel cardPanel = new JPanel();
         cardPanel.setLayout(new BorderLayout());
         cardPanel.setBackground(new Color(255, 255, 255));  // White background for cards
-        cardPanel.setPreferredSize(new Dimension(150, 80));  // Slightly reduced size for cards to fit better
+        cardPanel.setPreferredSize(new Dimension(250, 100));  // Slightly reduced size for cards to fit better
         cardPanel.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true));  // Light gray border with rounded corners
         cardPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding inside the card
 
         // Title Label
         JLabel titleLabel = new JLabel(title, JLabel.CENTER);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));  // Font size increased for title
-        titleLabel.setForeground(new Color(8, 103, 147));  // Dark brown color
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));  // Font size increased for title
+        titleLabel.setForeground(new Color(0,0,0));  // Dark brown color
 
         // Value Label
         JLabel valueLabel = new JLabel(value, JLabel.CENTER);
-        valueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));  // Increased font size for the value
-        valueLabel.setForeground(new Color(8, 103, 147));  // Dark brown color
+        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));  // Increased font size for the value
+        valueLabel.setForeground(new Color(131, 131, 131));  // Dark brown color
 
         // Adding components to the card
         cardPanel.add(titleLabel, BorderLayout.NORTH);

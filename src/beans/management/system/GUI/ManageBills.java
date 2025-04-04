@@ -39,7 +39,7 @@ public class ManageBills extends JPanel {
         billsTable.setBackground(Color.WHITE); // Set background to white
         billsTable.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12)); // Set font for JTable
         billsTable.setRowHeight(30); // Set row height for better readability
-        billsTable.getTableHeader().setBackground(new Color(77, 46, 10)); // Set header background color
+        billsTable.getTableHeader().setBackground(new Color(8, 103, 147)); // Set header background color
         billsTable.getTableHeader().setForeground(Color.WHITE); // Set header text color
         billsTable.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12)); // Set header font
 
@@ -49,7 +49,7 @@ public class ManageBills extends JPanel {
         // Create and add header label before the table
         JLabel headerLabel = new JLabel("Bill Management", JLabel.CENTER);
         headerLabel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16));
-        headerLabel.setForeground(new Color(77, 46, 10));  // Set header text color
+        headerLabel.setForeground(new Color(8, 103, 147));  // Set header text color
         headerLabel.setPreferredSize(new Dimension(600, 40));  // Set height for header
         add(headerLabel, BorderLayout.NORTH);  // Add the header label to the north of the panel
 
@@ -232,7 +232,7 @@ public class ManageBills extends JPanel {
 
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {
-        button.setBackground(new Color(77, 46, 10)); // Set the background color of the button
+        button.setBackground(new Color(8, 103, 147)); // Set the background color of the button
         button.setForeground(Color.WHITE); // Set the text color to white
         //button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font to Segoe UI, 12 pt, Bold
     }

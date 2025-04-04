@@ -34,7 +34,7 @@ public class ManageInventory extends JPanel {
         inventoryTable.setRowHeight(30);  // Set row height for better readability
 
         // Set the header background and font color
-        inventoryTable.getTableHeader().setBackground(new Color(77, 46, 10));
+        inventoryTable.getTableHeader().setBackground(new Color(8, 103, 147));
         inventoryTable.getTableHeader().setForeground(Color.WHITE);
         inventoryTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
 
@@ -45,7 +45,7 @@ public class ManageInventory extends JPanel {
         // Create and add header label before the table
         JLabel headerLabel = new JLabel("Inventory Management", JLabel.CENTER);
         headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        headerLabel.setForeground(new Color(77, 46, 10));
+        headerLabel.setForeground(new Color(8, 103, 147));
         headerLabel.setPreferredSize(new Dimension(600, 40));
         add(headerLabel, BorderLayout.NORTH);
 
@@ -213,7 +213,7 @@ public class ManageInventory extends JPanel {
 
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {
-        button.setBackground(new Color(77, 46, 10)); // Set background color of button
+        button.setBackground(new Color(8, 103, 147)); // Set background color of button
         button.setForeground(Color.WHITE); // Set text color to white
         button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font
     }

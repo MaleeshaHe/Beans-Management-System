@@ -39,7 +39,7 @@ public class EmployeeOrderHistoryPanel extends JPanel {
                     c.setBackground(Color.WHITE); // White for odd rows
                 }
                 if (isSelected) {
-                    c.setBackground(new Color(77, 46, 10)); // Dark background for selected rows
+                    c.setBackground(new Color(8, 103, 147)); // Dark background for selected rows
                     c.setForeground(Color.WHITE); // White text for selected rows
                 }
                 return c;
@@ -48,7 +48,7 @@ public class EmployeeOrderHistoryPanel extends JPanel {
 
         // Set table header style (background color, bold font, white text)
         JTableHeader header = ordersTable.getTableHeader();
-        header.setBackground(new Color(77, 46, 10)); // Dark brown header background
+        header.setBackground(new Color(8, 103, 147)); // Dark brown header background
         header.setForeground(Color.WHITE); // White text for header
         header.setFont(new Font("Segoe UI", Font.BOLD, 14)); // Bold font for header
 
@@ -58,7 +58,7 @@ public class EmployeeOrderHistoryPanel extends JPanel {
         // Title header with better styling
         JLabel headerLabel = new JLabel("Order History", JLabel.CENTER);
         headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        headerLabel.setForeground(new Color(77, 46, 10));
+        headerLabel.setForeground(new Color(8, 103, 147));
         headerLabel.setPreferredSize(new Dimension(600, 40));
         headerLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0)); // Add some padding
         add(headerLabel, BorderLayout.NORTH);

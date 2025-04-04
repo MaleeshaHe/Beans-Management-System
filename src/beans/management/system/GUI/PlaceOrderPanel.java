@@ -55,7 +55,7 @@ public class PlaceOrderPanel extends JPanel {
         headingPanel.setBackground(Color.WHITE);
         JLabel pageHeading = new JLabel("Place Order", JLabel.CENTER);
         pageHeading.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        pageHeading.setForeground(new Color(77, 46, 10));
+        pageHeading.setForeground(new Color(8, 103, 147));
         headingPanel.add(pageHeading);
         add(headingPanel, BorderLayout.NORTH);
 
@@ -71,7 +71,7 @@ public class PlaceOrderPanel extends JPanel {
         // Header label for items table
         JLabel itemsHeader = new JLabel("Select Items to Order", JLabel.CENTER);
         itemsHeader.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        itemsHeader.setForeground(new Color(77, 46, 10));
+        itemsHeader.setForeground(new Color(8, 103, 147));
         itemsHeader.setPreferredSize(new Dimension(600, 40));
         leftPanel.add(itemsHeader, BorderLayout.NORTH);
 
@@ -85,11 +85,11 @@ public class PlaceOrderPanel extends JPanel {
         itemsTable = new JTable(itemsTableModel);
         itemsTable.setRowHeight(30);
         itemsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        itemsTable.setSelectionBackground(new Color(77, 46, 10));  // Highlight selected rows with the same color as buttons
+        itemsTable.setSelectionBackground(new Color(8, 103, 147));  // Highlight selected rows with the same color as buttons
         itemsTable.setSelectionForeground(Color.WHITE); // Text color for selected row
 
         // Set table header styles
-        itemsTable.getTableHeader().setBackground(new Color(77, 46, 10)); // Header background color
+        itemsTable.getTableHeader().setBackground(new Color(8, 103, 147)); // Header background color
         itemsTable.getTableHeader().setForeground(Color.WHITE); // Header text color
         itemsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14)); // Header font style
 
@@ -117,7 +117,7 @@ public class PlaceOrderPanel extends JPanel {
         // Header label for the right panel
         JLabel rightHeader = new JLabel("Order Summary", JLabel.CENTER);
         rightHeader.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        rightHeader.setForeground(new Color(77, 46, 10));
+        rightHeader.setForeground(new Color(8, 103, 147));
         rightHeader.setPreferredSize(new Dimension(600, 40));
         rightPanel.add(rightHeader, BorderLayout.NORTH);
 
@@ -144,7 +144,7 @@ public class PlaceOrderPanel extends JPanel {
         JPanel tableHeaderPanel = new JPanel(new BorderLayout());
         JLabel tableHeader = new JLabel("Selected Items", JLabel.CENTER);
         tableHeader.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        tableHeader.setForeground(new Color(77, 46, 10));
+        tableHeader.setForeground(new Color(8, 103, 147));
         tableHeader.setPreferredSize(new Dimension(600, 40));
         tableHeaderPanel.add(tableHeader, BorderLayout.NORTH);
 
@@ -154,11 +154,11 @@ public class PlaceOrderPanel extends JPanel {
         selectedItemsTable = new JTable(selectedItemsTableModel);
         selectedItemsTable.setRowHeight(30);
         selectedItemsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        selectedItemsTable.setSelectionBackground(new Color(77, 46, 10));
+        selectedItemsTable.setSelectionBackground(new Color(8, 103, 147));
         selectedItemsTable.setSelectionForeground(Color.WHITE);
 
         // Set table header styles for selected items table
-        selectedItemsTable.getTableHeader().setBackground(new Color(77, 46, 10));
+        selectedItemsTable.getTableHeader().setBackground(new Color(8, 103, 147));
         selectedItemsTable.getTableHeader().setForeground(Color.WHITE);
         selectedItemsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
 
@@ -178,10 +178,10 @@ public class PlaceOrderPanel extends JPanel {
         // Discount Label
         JLabel discountLabelTitle = new JLabel("Discount (SAR):");
         discountLabelTitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        discountLabelTitle.setForeground(new Color(77, 46, 10));
+        discountLabelTitle.setForeground(new Color(8, 103, 147));
         discountLabel = new JLabel("SAR 0.00");
         discountLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        discountLabel.setForeground(new Color(77, 46, 10));
+        discountLabel.setForeground(new Color(8, 103, 147));
         gbc.gridx = 0;
         gbc.gridy = 0;
         bottomPanel.add(discountLabelTitle, gbc);
@@ -191,10 +191,10 @@ public class PlaceOrderPanel extends JPanel {
         // Final Total Label
         JLabel finalTotalLabelTitle = new JLabel("Final Total (SAR):");
         finalTotalLabelTitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        finalTotalLabelTitle.setForeground(new Color(77, 46, 10));
+        finalTotalLabelTitle.setForeground(new Color(8, 103, 147));
         finalTotalLabel = new JLabel("SAR 0.00");
         finalTotalLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        finalTotalLabel.setForeground(new Color(77, 46, 10));
+        finalTotalLabel.setForeground(new Color(8, 103, 147));
         gbc.gridx = 0;
         gbc.gridy = 1;
         bottomPanel.add(finalTotalLabelTitle, gbc);
@@ -380,7 +380,7 @@ public class PlaceOrderPanel extends JPanel {
 
     // Button styling method
     private void styleButton(JButton button) {
-        button.setBackground(new Color(77, 46, 10));
+        button.setBackground(new Color(8, 103, 147));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
         button.setPreferredSize(new Dimension(130, 30));

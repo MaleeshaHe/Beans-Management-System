@@ -139,7 +139,7 @@ public class CustomerInputDialog extends JDialog {
     
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {
-        button.setBackground(new Color(77, 46, 10)); // Set background color of button
+        button.setBackground(new Color(8, 103, 147)); // Set background color of button
         button.setForeground(Color.WHITE); // Set text color to white
         button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font
         button.setPreferredSize(new Dimension(135, 35));  // Set button size

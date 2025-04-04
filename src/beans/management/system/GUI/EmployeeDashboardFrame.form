@@ -33,7 +33,7 @@
     <Container class="javax.swing.JPanel" name="navPanel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="f2" green="f7" red="fd" type="rgb"/>
+          <Color blue="ef" green="ef" red="ef" type="rgb"/>
         </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[180, 500]"/>

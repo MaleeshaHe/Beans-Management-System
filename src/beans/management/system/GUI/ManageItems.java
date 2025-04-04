@@ -34,7 +34,7 @@ public class ManageItems extends JPanel {
         itemsTable.setRowHeight(30); // Set row height for better readability
 
         // Set the header background and font color
-        itemsTable.getTableHeader().setBackground(new Color(77, 46, 10)); // Set header background color
+        itemsTable.getTableHeader().setBackground(new Color(8, 103, 147)); // Set header background color
         itemsTable.getTableHeader().setForeground(Color.WHITE); // Set header text color
         itemsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set header font
 
@@ -45,7 +45,7 @@ public class ManageItems extends JPanel {
         // Create and add header label before the table
         JLabel headerLabel = new JLabel("Item Management", JLabel.CENTER);
         headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        headerLabel.setForeground(new Color(77, 46, 10));  // Set header text color
+        headerLabel.setForeground(new Color(8, 103, 147));  // Set header text color
         headerLabel.setPreferredSize(new Dimension(600, 40));  // Set height for header
         add(headerLabel, BorderLayout.NORTH);  // Add the header label to the north of the panel
 
@@ -181,7 +181,7 @@ public class ManageItems extends JPanel {
 
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {
-        button.setBackground(new Color(77, 46, 10)); // Set the background color of the button
+        button.setBackground(new Color(8, 103, 147)); // Set the background color of the button
         button.setForeground(Color.WHITE); // Set the text color to white
         button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font to Segoe UI, 12 pt, Bold
     }

@@ -22,7 +22,7 @@ public class ViewSalesReports extends JPanel {
         // Header label for the entire panel
         JLabel label = new JLabel("Sales Reports", JLabel.CENTER);
         label.setFont(new Font("Segoe UI", Font.BOLD, 24));  // Larger font size for the title
-        label.setForeground(new Color(77, 46, 10));  // Dark brown color
+        label.setForeground(new Color(8, 103, 147));  // Dark brown color
         label.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));  // Padding around title
         add(label, BorderLayout.NORTH);  // Add the heading at the top
 
@@ -84,12 +84,12 @@ public class ViewSalesReports extends JPanel {
         // Title Label
         JLabel titleLabel = new JLabel(title, JLabel.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));  // Font size increased for title
-        titleLabel.setForeground(new Color(77, 46, 10));  // Dark brown color
+        titleLabel.setForeground(new Color(8, 103, 147));  // Dark brown color
 
         // Value Label
         JLabel valueLabel = new JLabel(value, JLabel.CENTER);
         valueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));  // Increased font size for the value
-        valueLabel.setForeground(new Color(77, 46, 10));  // Dark brown color
+        valueLabel.setForeground(new Color(8, 103, 147));  // Dark brown color
 
         // Adding components to the card
         cardPanel.add(titleLabel, BorderLayout.NORTH);

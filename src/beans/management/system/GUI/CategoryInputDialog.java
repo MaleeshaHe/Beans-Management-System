@@ -107,9 +107,9 @@ public class CategoryInputDialog extends JDialog {
 
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {
-        button.setBackground(new Color(77, 46, 10)); // Set the background color of the button
+        button.setBackground(new Color(8, 103, 147)); // Set the background color of the button
         button.setForeground(Color.WHITE); // Set the text color to white
-        button.setFont(new Font("Segoe UI", Font.BOLD, 14)); // Set font to Segoe UI, 14 pt, Bold
+        button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font to Segoe UI, 14 pt, Bold
         button.setPreferredSize(new Dimension(120, 40)); // Ensure buttons are of uniform size
     }
 }

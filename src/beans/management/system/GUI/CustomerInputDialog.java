@@ -44,19 +44,19 @@ public class CustomerInputDialog extends JDialog {
 
         // Email Field
         gbc.gridx = 0;
-        add(new JLabel("Email: "), gbc);
+        add(new JLabel("Phone Number: "), gbc);
         emailField = new JTextField(isEditMode ? customer.getEmail() : "");
         emailField.setPreferredSize(new Dimension(250, 30)); // Set a width for the text field
         gbc.gridx = 1;
         add(emailField, gbc);
 
         // Password Field
-        gbc.gridx = 0;
-        add(new JLabel("Password: "), gbc);
-        passwordField = new JPasswordField(isEditMode ? customer.getPassword() : "");
-        passwordField.setPreferredSize(new Dimension(250, 30)); // Set a width for the text field
-        gbc.gridx = 1;
-        add(passwordField, gbc);
+//        gbc.gridx = 0;
+//        add(new JLabel("Password: "), gbc);
+//        passwordField = new JPasswordField(isEditMode ? customer.getPassword() : "");
+//        passwordField.setPreferredSize(new Dimension(250, 30)); // Set a width for the text field
+//        gbc.gridx = 1;
+//        add(passwordField, gbc);
 
         // No Role selection needed, set role as Customer by default
         // Role is assumed to be "Customer" for all users

@@ -66,16 +66,27 @@ public class OrderDAO {
                     int orderId = generatedKeys.getInt(1);
                     order.setOrderId(orderId);
 
-                    // Insert each order item into Order_Item table
+                    // Insert each order item into Order_Item table and update inventory
                     String itemQuery = "INSERT INTO Order_Item (order_id, item_id, quantity) VALUES (?, ?, ?)";
-                    try (PreparedStatement itemStmt = connection.prepareStatement(itemQuery)) {
+                    String inventoryUpdateQuery = "UPDATE Inventory SET stock_quantity = stock_quantity - ? WHERE item_id = ?";
+
+                    try (PreparedStatement itemStmt = connection.prepareStatement(itemQuery);
+                         PreparedStatement inventoryStmt = connection.prepareStatement(inventoryUpdateQuery)) {
+
                         for (OrderItem item : orderItems) {
                             itemStmt.setInt(1, orderId);
-                            itemStmt.setInt(2, item.getItemId());  // Ensure you get the correct item_id
+                            itemStmt.setInt(2, item.getItemId());
                             itemStmt.setInt(3, item.getQuantity());
                             itemStmt.addBatch();
+
+                            // Update inventory
+                            inventoryStmt.setInt(1, item.getQuantity());
+                            inventoryStmt.setInt(2, item.getItemId());
+                            inventoryStmt.addBatch();
                         }
+
                         itemStmt.executeBatch();
+                        inventoryStmt.executeBatch();
                     }
 
                     // Insert receipt into Receipt table
@@ -110,6 +121,7 @@ public class OrderDAO {
         }
         return success;
     }
+
     
         // Method to get the total number of orders
     public int getTotalOrders() {

@@ -75,7 +75,7 @@ public class EmployeeOrderHistoryPanel extends JPanel {
         for (Order order : orders) {
             tableModel.addRow(new Object[]{
                     order.getOrderId(),
-                    "$" + String.format("%.2f", order.getTotalAmount()),  // Format total amount
+                    "SAR " + String.format("%.2f", order.getTotalAmount()),  // Format total amount
                     order.getOrderDate(),
                     order.getStatus()
             });

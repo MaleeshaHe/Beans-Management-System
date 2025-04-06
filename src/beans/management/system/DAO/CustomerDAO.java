@@ -17,7 +17,7 @@ public class CustomerDAO {
     // Fetch all customers (Users)
     public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
-        String query = "SELECT u.user_id, u.first_name, u.last_name, u.email, u.password, u.role_id, r.role_name FROM User u JOIN Role r ON u.role_id = r.role_id WHERE r.role_name = 'Customer' AND u.is_deleted = 0"; // Soft delete check
+        String query = "SELECT u.user_id, u.first_name, u.last_name, u.phone_number, u.password, u.role_id, r.role_name FROM User u JOIN Role r ON u.role_id = r.role_id WHERE r.role_name = 'Customer' AND u.is_deleted = 0"; // Soft delete check
         
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             ResultSet rs = pstmt.executeQuery();
@@ -27,7 +27,7 @@ public class CustomerDAO {
                         rs.getInt("user_id"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
-                        rs.getString("email"),
+                        rs.getString("phone_number"),
                         rs.getString("password"),
                         rs.getInt("role_id"),
                         rs.getString("role_name")

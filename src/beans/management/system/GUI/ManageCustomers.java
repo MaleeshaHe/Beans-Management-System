@@ -21,7 +21,7 @@ public class ManageCustomers extends JPanel {
         customerDAO = new CustomerDAO();  // Initialize CustomerDAO
 
         // Create table model and JTable for displaying customers
-        String[] columnNames = {"Customer ID", "First Name", "Last Name", "Email", "Role"};
+        String[] columnNames = {"Customer ID", "First Name", "Last Name", "Phone Number", "Role"};
         tableModel = new DefaultTableModel(columnNames, 0);
         customersTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(customersTable);

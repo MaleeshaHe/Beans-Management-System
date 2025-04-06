@@ -3,14 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/GUI/ManageBills.java</file>
             <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/Main.java</file>
-            <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/DAO/OrderDAO.java</file>
-            <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/DAO/UserDAO.java</file>
-            <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/GUI/LoginFrame.java</file>
-            <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/GUI/ManagerDashboardFrame.java</file>
-            <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/GUI/EmployeeDashboardFrame.java</file>
-            <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/GUI/ViewSalesReports.java</file>
-            <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/GUI/CustomerInputDialog.java</file>
+            <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/GUI/ManageCustomers.java</file>
+            <file>file:/C:/Users/malee/Desktop/mahaam11/Project/Beans%20Management%20System/src/beans/management/system/DAO/CustomerDAO.java</file>
         </group>
     </open-files>
 </project-private>

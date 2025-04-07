@@ -3,10 +3,6 @@ package beans.management.system.GUI;
 import javax.swing.*;
 import java.awt.*;
 import beans.management.system.DAO.OrderDAO;
-import org.jfree.chart.*;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 
 public class ViewSalesReports extends JPanel {
 

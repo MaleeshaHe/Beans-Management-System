@@ -15,9 +15,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.util.*;
 import java.util.List;
 import utils.SessionManager;
@@ -84,7 +87,6 @@ public class PlaceOrderPanel extends JPanel {
             }
         };
 
-
         itemsTable = new JTable(itemsTableModel);
         itemsTable.setRowHeight(30);
         itemsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
@@ -94,6 +96,9 @@ public class PlaceOrderPanel extends JPanel {
         itemsTable.getTableHeader().setBackground(new Color(8, 103, 147));
         itemsTable.getTableHeader().setForeground(Color.WHITE);
         itemsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        
+        // Set custom renderer for the "Available Quantity" column (index 3)
+        itemsTable.getColumnModel().getColumn(3).setCellRenderer(new AvailableQuantityCellRenderer());
 
         JScrollPane itemScrollPane = new JScrollPane(itemsTable);
         itemScrollPane.setPreferredSize(new Dimension(600, 250));
@@ -108,6 +113,15 @@ public class PlaceOrderPanel extends JPanel {
                 }
             }
         });
+        
+        itemsTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    addItemToOrder();  // Call the method to add item to order
+                }
+            }
+        });
+
 
         // Right panel for selected items and details
         JPanel rightPanel = new JPanel();
@@ -180,6 +194,30 @@ public class PlaceOrderPanel extends JPanel {
         selectedItemsTable.getTableHeader().setBackground(new Color(8, 103, 147));
         selectedItemsTable.getTableHeader().setForeground(Color.WHITE);
         selectedItemsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+        
+        selectedItemsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {  // Detect double-click
+                    int selectedRow = selectedItemsTable.getSelectedRow();
+                    if (selectedRow != -1) {
+                        removeItemFromOrder(selectedRow);  // Call the method to remove the item
+                    }
+                }
+            }
+        });
+        
+        // Inside your constructor, add a KeyListener to the selectedItemsTable
+        selectedItemsTable.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+                    int selectedRow = selectedItemsTable.getSelectedRow();
+                    removeItemFromOrder(selectedRow);  // Call the method to remove the item
+                }
+            }
+        });
+
 
         JScrollPane selectedItemsScrollPane = new JScrollPane(selectedItemsTable);
         selectedItemsScrollPane.setPreferredSize(new Dimension(600, 250));
@@ -261,46 +299,70 @@ public class PlaceOrderPanel extends JPanel {
             }
         });
         
-            itemsTable.getModel().addTableModelListener(e -> {
-        // Check if the event is triggered by the Quantity column (index 4)
-        if (e.getColumn() == 4) {
-            int row = e.getFirstRow();
-            int availableQty = (int) itemsTableModel.getValueAt(row, 3);  // Get the available quantity from column 3
-            int enteredQty = 0;
+        itemsTable.getModel().addTableModelListener(e -> {
+            // Check if the event is triggered by the Quantity column (index 4)
+            if (e.getColumn() == 4) {
+                int row = e.getFirstRow();
+                int availableQty = (int) itemsTableModel.getValueAt(row, 3);  // Get the available quantity from column 3
+                int enteredQty = 0;
 
-            try {
-                enteredQty = Integer.parseInt(itemsTableModel.getValueAt(row, 4).toString());  // Get the entered quantity
-            } catch (NumberFormatException ex) {
-                // If invalid entry, reset to 0
-                itemsTableModel.setValueAt(0, row, 4);
-                return;
+                try {
+                    enteredQty = Integer.parseInt(itemsTableModel.getValueAt(row, 4).toString());  // Get the entered quantity
+                } catch (NumberFormatException ex) {
+                    // If invalid entry, reset to 0
+                    itemsTableModel.setValueAt(0, row, 4);
+                    return;
+                }
+
+                // Ensure that the entered quantity does not exceed the available stock
+                if (enteredQty > availableQty) {
+                    JOptionPane.showMessageDialog(this, "Entered quantity exceeds available stock!");
+                    // Set the entered quantity to the available quantity
+                    itemsTableModel.setValueAt(availableQty, row, 4);
+                }
+
+                // If valid, update the available stock (subtract entered quantity)
+                itemsTableModel.setValueAt(availableQty - enteredQty, row, 3);  // Update available quantity
             }
-
-            // Ensure that the entered quantity does not exceed the available stock
-            if (enteredQty > availableQty) {
-                JOptionPane.showMessageDialog(this, "Entered quantity exceeds available stock!");
-                // Set the entered quantity to the available quantity
-                itemsTableModel.setValueAt(availableQty, row, 4);
-            }
-
-            // If valid, update the available stock (subtract entered quantity)
-            itemsTableModel.setValueAt(availableQty - enteredQty, row, 3);  // Update available quantity
-        }
-    });
+        });
     }
 
+    // Custom renderer for Available Quantity column
+    class AvailableQuantityCellRenderer extends JLabel implements TableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            setText(value.toString());
+            int quantity = Integer.parseInt(value.toString());
+
+            // Set the background color based on quantity value
+            if (quantity == 0) {
+                setBackground(new Color(255,204,204));  // No stock left
+                setHorizontalAlignment(JLabel.CENTER);
+            } else if (quantity <= 10) {
+                setBackground(Color.YELLOW);  // Low stock
+                setHorizontalAlignment(JLabel.CENTER);
+            } else {
+                setBackground(new Color(204,255,204));  // In stock
+                setHorizontalAlignment(JLabel.CENTER);
+            }
+
+            setOpaque(true);  // Ensure the background color is visible
+            return this;
+        }
+    }
+    
 
     private void addCustomer() {
         // Pop-up a dialog for adding new customer
         new CustomerInputDialog((JFrame) SwingUtilities.getWindowAncestor(this), false, null);
         loadCustomers();
     }
-    
+
     private void loadItems() {
         List<Item> items = itemDAO.getAllItemsWithQuantity();  // Fetch items with available quantity
         for (Item item : items) {
             // Adding a row in the table for each item including the available quantity
-            itemsTableModel.addRow(new Object[]{
+            itemsTableModel.addRow(new Object[] {
                 item.getItemName(),
                 "SAR " + item.getPrice(),
                 item.getDescription(),
@@ -309,8 +371,6 @@ public class PlaceOrderPanel extends JPanel {
             });
         }
     }
-
-
 
     private void loadCustomers() {
         customersDropdown.removeAllItems();
@@ -350,7 +410,7 @@ public class PlaceOrderPanel extends JPanel {
         finalTotalLabel.setText("SAR " + String.format("%.2f", totalAmount));
         this.totalAmount = totalAmount;
     }
-    
+
     private void addItemToOrder() {
         int selectedRow = itemsTable.getSelectedRow();
         if (selectedRow != -1) {
@@ -383,7 +443,7 @@ public class PlaceOrderPanel extends JPanel {
 
             if (quantity > 0) {
                 selectedItems.add(new OrderItem(0, selectedItemId, quantity));
-                selectedItemsTableModel.addRow(new Object[]{
+                selectedItemsTableModel.addRow(new Object[] {
                         itemName, "SAR " + itemPrice, quantity, "SAR " + (itemPrice * quantity)
                 });
                 updateTotalAmount();
@@ -391,6 +451,25 @@ public class PlaceOrderPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Please select a valid quantity.");
             }
         }
+    }
+    
+    private void removeItemFromOrder(int selectedRow) {
+        // Get the item name from the selected row
+        String itemName = (String) selectedItemsTableModel.getValueAt(selectedRow, 0);
+
+        // Find the corresponding OrderItem in the selectedItems list
+        for (OrderItem orderItem : selectedItems) {
+            if (orderItem.getItemId() == itemDAO.getItemIdByName(itemName)) {
+                selectedItems.remove(orderItem);  // Remove the item from the list
+                break;
+            }
+        }
+
+        // Remove the selected row from the table model
+        selectedItemsTableModel.removeRow(selectedRow);
+
+        // Update the total amount after removal
+        updateTotalAmount();
     }
 
 

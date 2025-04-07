@@ -40,6 +40,53 @@ public class UserDAO {
         return null;  // User not found or invalid credentials
     }
     
+    // Check if email already exists (including deleted users)
+    public boolean isEmailExists(String email) {
+        String query = "SELECT COUNT(*) FROM User WHERE email = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    // Sign up new user (only if role is Employee or Manager and email doesn't exist)
+    public boolean signUpUser(User user, String roleName) {
+        if (!roleName.equals("Employee") && !roleName.equals("Manager")) {
+            System.out.println("Invalid role. Only 'Employee' or 'Manager' allowed.");
+            return false;
+        }
+
+        if (isEmailExists(user.getEmail())) {
+            System.out.println("Email already exists. Choose another email.");
+            return false;
+        }
+
+        String query = "INSERT INTO User (first_name, last_name, email, password, role_id, is_deleted) " +
+                       "VALUES (?, ?, ?, ?, (SELECT role_id FROM Role WHERE role_name = ?), FALSE)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, user.getFirstName());
+            stmt.setString(2, user.getLastName());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getPassword());  // You should hash this before saving!
+            stmt.setString(5, roleName);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    
     // Fetch all employees (users with "Employee" role, excluding deleted ones)
     public List<User> getAllEmployees() {
         List<User> employees = new ArrayList<>();

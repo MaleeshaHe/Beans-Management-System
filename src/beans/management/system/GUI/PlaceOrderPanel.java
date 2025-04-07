@@ -75,13 +75,24 @@ public class PlaceOrderPanel extends JPanel {
         itemsHeader.setPreferredSize(new Dimension(600, 40));
         leftPanel.add(itemsHeader, BorderLayout.NORTH);
 
-        String[] itemColumns = {"Item Name", "Price (SAR)", "Description", "Quantity"};
+//        String[] itemColumns = {"Item Name", "Price (SAR)", "Description", "Quantity"};
+//        itemsTableModel = new DefaultTableModel(itemColumns, 0) {
+//            @Override
+//            public boolean isCellEditable(int row, int column) {
+//                return column == 3; // Only allow editing quantity
+//            }
+//        };
+        
+        String[] itemColumns = {"Item Name", "Price (SAR)", "Description", "Available Quantity", "Quantity"};
         itemsTableModel = new DefaultTableModel(itemColumns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 3; // Only allow editing quantity
+                // Only allow editing in the "Quantity" column (index 4)
+                return column == 4;
             }
         };
+
+
         itemsTable = new JTable(itemsTableModel);
         itemsTable.setRowHeight(30);
         itemsTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
@@ -257,20 +268,57 @@ public class PlaceOrderPanel extends JPanel {
                 updateTotalAmount();
             }
         });
+        
+            itemsTable.getModel().addTableModelListener(e -> {
+        // Check if the event is triggered by the Quantity column (index 4)
+        if (e.getColumn() == 4) {
+            int row = e.getFirstRow();
+            int availableQty = (int) itemsTableModel.getValueAt(row, 3);  // Get the available quantity from column 3
+            int enteredQty = 0;
+
+            try {
+                enteredQty = Integer.parseInt(itemsTableModel.getValueAt(row, 4).toString());  // Get the entered quantity
+            } catch (NumberFormatException ex) {
+                // If invalid entry, reset to 0
+                itemsTableModel.setValueAt(0, row, 4);
+                return;
+            }
+
+            // Ensure that the entered quantity does not exceed the available stock
+            if (enteredQty > availableQty) {
+                JOptionPane.showMessageDialog(this, "Entered quantity exceeds available stock!");
+                // Set the entered quantity to the available quantity
+                itemsTableModel.setValueAt(availableQty, row, 4);
+            }
+
+            // If valid, update the available stock (subtract entered quantity)
+            itemsTableModel.setValueAt(availableQty - enteredQty, row, 3);  // Update available quantity
+        }
+    });
     }
+
 
     private void addCustomer() {
         // Pop-up a dialog for adding new customer
         new CustomerInputDialog((JFrame) SwingUtilities.getWindowAncestor(this), false, null);
         loadCustomers();
     }
-
+    
     private void loadItems() {
-        List<Item> items = itemDAO.getAllItems();
+        List<Item> items = itemDAO.getAllItemsWithQuantity();  // Fetch items with available quantity
         for (Item item : items) {
-            itemsTableModel.addRow(new Object[]{item.getItemName(), item.getPrice(), item.getDescription(), 0});
+            // Adding a row in the table for each item including the available quantity
+            itemsTableModel.addRow(new Object[]{
+                item.getItemName(),
+                "SAR " + item.getPrice(),
+                item.getDescription(),
+                item.getStockQuantity(),  // Displaying the available quantity in the "Available Quantity" column
+                0  // Initial quantity set to 0
+            });
         }
     }
+
+
 
     private void loadCustomers() {
         customersDropdown.removeAllItems();
@@ -310,7 +358,7 @@ public class PlaceOrderPanel extends JPanel {
         finalTotalLabel.setText("SAR " + String.format("%.2f", totalAmount));
         this.totalAmount = totalAmount;
     }
-
+    
     private void addItemToOrder() {
         int selectedRow = itemsTable.getSelectedRow();
         if (selectedRow != -1) {
@@ -325,9 +373,17 @@ public class PlaceOrderPanel extends JPanel {
 
             selectedItemId = itemDAO.getItemIdByName(itemName);
 
+            // Check if the item is already in the selected items
+            for (OrderItem orderItem : selectedItems) {
+                if (orderItem.getItemId() == selectedItemId) {
+                    JOptionPane.showMessageDialog(this, "This item is already selected.");
+                    return;  // Do not add the item again
+                }
+            }
+
             int quantity = 0;
             try {
-                quantity = Integer.parseInt(itemsTable.getValueAt(selectedRow, 3).toString());
+                quantity = Integer.parseInt(itemsTable.getValueAt(selectedRow, 4).toString());
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Please enter a valid quantity.");
                 return;
@@ -344,6 +400,7 @@ public class PlaceOrderPanel extends JPanel {
             }
         }
     }
+
 
     private void placeOrder() {
         selectedCustomerId = ((Customer) customersDropdown.getSelectedItem()).getUserId();

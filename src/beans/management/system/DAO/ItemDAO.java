@@ -14,6 +14,35 @@ public class ItemDAO {
     public ItemDAO() {
         connection = DBConnection.getConnection(); // Assuming DBConnection is a utility to get DB connection
     }
+    
+    // In ItemDAO.java
+    public List<Item> getAllItemsWithQuantity() {
+        List<Item> items = new ArrayList<>();
+        String query = "SELECT i.item_id, i.item_name, i.price, i.description, i.category_id, inv.stock_quantity " +
+                       "FROM Item i " +
+                       "LEFT JOIN Inventory inv ON i.item_id = inv.item_id " +
+                       "WHERE i.is_deleted = 0";  // Ensure the item is not deleted
+
+        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Item item = new Item(
+                        rs.getInt("item_id"),
+                        rs.getString("item_name"),
+                        rs.getDouble("price"),
+                        rs.getString("description"),
+                        rs.getInt("category_id")
+                );
+                int stockQuantity = rs.getInt("stock_quantity");
+                item.setStockQuantity(stockQuantity);  // Assuming Item has a setStockQuantity method
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
+
+
 
     // Get all items that are not soft deleted
     public List<Item> getAllItems() {

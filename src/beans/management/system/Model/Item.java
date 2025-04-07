@@ -9,6 +9,8 @@ public class Item {
     private double price;
     private String description;
     private int categoryId;
+    private int stockQuantity;  // Field for stock quantity
+
 
     public Item() {
     }
@@ -59,6 +61,15 @@ public class Item {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+    
+    
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    public int getStockQuantity() {
+        return stockQuantity;
     }
     
     // Override the toString method to display item name in JComboBox

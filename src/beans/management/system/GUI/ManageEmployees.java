@@ -23,7 +23,7 @@ public class ManageEmployees extends JPanel {
         userDAO = new UserDAO();
 
         // Create table model and JTable for displaying employees
-        String[] columnNames = {"Employee ID", "First Name", "Last Name", "Email", "Role"};
+        String[] columnNames = {"Employee ID", "First Name", "Last Name", "Email"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             // Override isCellEditable to prevent editing all cells
             @Override
@@ -106,7 +106,7 @@ public class ManageEmployees extends JPanel {
 
         List<User> employees = userDAO.getAllEmployees();
         for (User user : employees) {
-            tableModel.addRow(new Object[]{user.getUserId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getRole()});
+            tableModel.addRow(new Object[]{user.getUserId(), user.getFirstName(), user.getLastName(), user.getEmail()});
         }
     }
 

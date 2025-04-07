@@ -206,9 +206,51 @@ public class SignUpFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupButtonActionPerformed
-        //loginAction();
-        //new EmployeeDashboardFrame().setVisible(true);
-        //this.setVisible(false);
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String email = emailField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
+
+        String roleName = "";
+        if (employee.isSelected()) {
+            roleName = "Employee";
+        } else if (manager.isSelected()) {
+            roleName = "Manager";
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a role (Employee or Manager).");
+            return;
+        }
+
+        // Validate form
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please fill all fields.");
+            return;
+        }
+
+        beans.management.system.DAO.UserDAO userDAO = new beans.management.system.DAO.UserDAO();
+
+        // Check if email already exists
+        if (userDAO.isEmailExists(email)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Email is already registered. Try logging in.");
+            return;
+        }
+
+        // Create user object
+        beans.management.system.Model.User user = new beans.management.system.Model.User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(password); // Consider hashing before saving
+
+        boolean success = userDAO.signUpUser(user, roleName);
+
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Sign-up successful!");
+            new LoginFrame().setVisible(true);
+            this.setVisible(false);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Sign-up failed. Please try again.");
+        }
     }//GEN-LAST:event_signupButtonActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed

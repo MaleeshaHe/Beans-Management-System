@@ -1,6 +1,6 @@
 package beans.management.system.DAO;
 
-import beans.management.system.Model.Customer;  // Change to Customer model
+import beans.management.system.Model.Customer;
 import java.sql.*;
 import java.util.*;
 import utils.DBConnection;
@@ -9,28 +9,29 @@ public class CustomerDAO {
 
     private Connection connection;
 
-    // Constructor to initialize connection
+    // Constructor
     public CustomerDAO() {
         connection = DBConnection.getConnection();
     }
 
-    // Fetch all customers (Users)
+    // Fetch all customers
     public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
-        String query = "SELECT u.user_id, u.first_name, u.last_name, u.phone_number, u.password, u.role_id, r.role_name FROM User u JOIN Role r ON u.role_id = r.role_id WHERE r.role_name = 'Customer' AND u.is_deleted = 0"; // Soft delete check
-        
+        String query = "SELECT u.user_id, u.first_name, u.last_name, u.phone_number, u.role_id, r.role_name " +
+                       "FROM User u JOIN Role r ON u.role_id = r.role_id " +
+                       "WHERE r.role_name = 'Customer' AND u.is_deleted = 0";
+
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             ResultSet rs = pstmt.executeQuery();
-            
+
             while (rs.next()) {
                 Customer customer = new Customer(
-                        rs.getInt("user_id"),
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
-                        rs.getString("phone_number"),
-                        rs.getString("password"),
-                        rs.getInt("role_id"),
-                        rs.getString("role_name")
+                    rs.getInt("user_id"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("phone_number"),
+                    rs.getInt("role_id"),
+                    rs.getString("role_name")
                 );
                 customers.add(customer);
             }
@@ -40,36 +41,40 @@ public class CustomerDAO {
         return customers;
     }
 
-    // Add new customer (User)
+    // Add new customer
     public boolean addCustomer(Customer customer) {
-        String query = "INSERT INTO User (first_name, last_name, email, password, role_id) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO User (first_name, last_name, phone_number, email, password, role_id, is_deleted) " +
+                       "VALUES (?, ?, ?, ?, ?, ?, 0)";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, customer.getFirstName());
             pstmt.setString(2, customer.getLastName());
-            pstmt.setString(3, customer.getEmail());
-            pstmt.setString(4, customer.getPassword());
-            pstmt.setInt(5, customer.getRoleId());  // Set the role_id (roleId from the combo box)
+            pstmt.setString(3, customer.getPhoneNumber());
+            pstmt.setString(4, "placeholder@example.com");  // Default email
+            pstmt.setString(5, "default123");  // Default password
+            pstmt.setInt(6, customer.getRoleId());
 
-            return pstmt.executeUpdate() > 0;  // If rows are inserted, return true
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    // Update customer details
+
+
+    // Update customer
     public boolean updateCustomer(Customer customer) {
-        String query = "UPDATE User SET first_name = ?, last_name = ?, email = ?, password = ?, role_id = ? WHERE user_id = ?";
-        
+        String query = "UPDATE User SET first_name = ?, last_name = ?, phone_number = ?, role_id = ? " +
+                       "WHERE user_id = ? AND is_deleted = 0";
+
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, customer.getFirstName());
             pstmt.setString(2, customer.getLastName());
-            pstmt.setString(3, customer.getEmail());
-            pstmt.setString(4, customer.getPassword());
-            pstmt.setInt(5, customer.getRoleId());
-            pstmt.setInt(6, customer.getUserId());
-            
+            pstmt.setString(3, customer.getPhoneNumber());
+            pstmt.setInt(4, customer.getRoleId());
+            pstmt.setInt(5, customer.getUserId());
+
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,7 +85,7 @@ public class CustomerDAO {
     // Soft delete customer
     public boolean softDeleteCustomer(int userId) {
         String query = "UPDATE User SET is_deleted = 1 WHERE user_id = ?";
-        
+
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, userId);
             return pstmt.executeUpdate() > 0;
@@ -89,11 +94,11 @@ public class CustomerDAO {
         }
         return false;
     }
-    
-    // In CustomerDAO.java
+
+    // Get Customer ID by First Name
     public int getCustomerIdByName(String firstName) {
         int customerId = -1;
-        String query = "SELECT user_id FROM User WHERE first_name = ? AND is_deleted = 0";  // Ensures the customer is not soft-deleted
+        String query = "SELECT user_id FROM User WHERE first_name = ? AND is_deleted = 0";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, firstName);
@@ -108,5 +113,4 @@ public class CustomerDAO {
 
         return customerId;
     }
-
 }

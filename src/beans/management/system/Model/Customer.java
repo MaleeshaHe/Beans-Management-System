@@ -4,20 +4,18 @@ public class Customer {
     private int userId;
     private String firstName;
     private String lastName;
-    private String email;
-    private String password;
+    private String phoneNumber;
     private int roleId;
     private String roleName;
 
     public Customer() {
     }
 
-    public Customer(int userId, String firstName, String lastName, String email, String password, int roleId, String roleName) {
+    public Customer(int userId, String firstName, String lastName, String phoneNumber, int roleId, String roleName) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
-        this.password = password;
+        this.phoneNumber = phoneNumber;
         this.roleId = roleId;
         this.roleName = roleName;
     }
@@ -46,20 +44,12 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public int getRoleId() {
@@ -77,11 +67,9 @@ public class Customer {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
-    
+
     @Override
     public String toString() {
         return firstName + " " + lastName; // Display the full name of the customer
     }
-    
-    
 }

@@ -8,140 +8,118 @@ import java.awt.event.*;
 
 public class CustomerInputDialog extends JDialog {
 
-    private JTextField firstNameField, lastNameField, emailField;
-    private JPasswordField passwordField;
+    private JTextField firstNameField, lastNameField, phoneNumberField;
     private JButton saveButton, cancelButton;
     private boolean isEditMode;
     private Customer currentCustomer;
 
-    // Constructor for the dialog (Add or Edit Mode)
+    // Constructor
     public CustomerInputDialog(JFrame parent, boolean isEditMode, Customer customer) {
         super(parent, "Customer Details", true);
         this.isEditMode = isEditMode;
-        this.currentCustomer = customer;  // The customer to edit, if available
+        this.currentCustomer = customer;
 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         getContentPane().setBackground(Color.WHITE);
-
-        // Create and align the form fields
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // First Name Field
+        // First Name
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         add(new JLabel("First Name: "), gbc);
+
         firstNameField = new JTextField(isEditMode ? customer.getFirstName() : "");
-        firstNameField.setPreferredSize(new Dimension(250, 30)); // Set a width for the text field
+        firstNameField.setPreferredSize(new Dimension(250, 30));
         gbc.gridx = 1;
         add(firstNameField, gbc);
 
-        // Last Name Field
+        // Last Name
         gbc.gridx = 0;
+        gbc.gridy++;
         add(new JLabel("Last Name: "), gbc);
+
         lastNameField = new JTextField(isEditMode ? customer.getLastName() : "");
-        lastNameField.setPreferredSize(new Dimension(250, 30)); // Set a width for the text field
+        lastNameField.setPreferredSize(new Dimension(250, 30));
         gbc.gridx = 1;
         add(lastNameField, gbc);
 
-        // Email Field
+        // Phone Number
         gbc.gridx = 0;
+        gbc.gridy++;
         add(new JLabel("Phone Number: "), gbc);
-        emailField = new JTextField(isEditMode ? customer.getEmail() : "");
-        emailField.setPreferredSize(new Dimension(250, 30)); // Set a width for the text field
+
+        phoneNumberField = new JTextField(isEditMode ? customer.getPhoneNumber() : "");
+        phoneNumberField.setPreferredSize(new Dimension(250, 30));
         gbc.gridx = 1;
-        add(emailField, gbc);
+        add(phoneNumberField, gbc);
 
-        // Password Field
-//        gbc.gridx = 0;
-//        add(new JLabel("Password: "), gbc);
-//        passwordField = new JPasswordField(isEditMode ? customer.getPassword() : "");
-//        passwordField.setPreferredSize(new Dimension(250, 30)); // Set a width for the text field
-//        gbc.gridx = 1;
-//        add(passwordField, gbc);
-
-        // No Role selection needed, set role as Customer by default
-        // Role is assumed to be "Customer" for all users
-
-        // Save and Cancel Buttons
+        // Save & Cancel Buttons
         saveButton = new JButton(isEditMode ? "Update Customer" : "Add Customer");
         cancelButton = new JButton("Cancel");
-        
-        // Style buttons
+
         styleButton(saveButton);
         styleButton(cancelButton);
-        
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveCustomer();
-            }
-        });
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
 
-        // Button panel
+        saveButton.addActionListener(e -> saveCustomer());
+        cancelButton.addActionListener(e -> dispose());
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.add(saveButton);
         buttonPanel.add(cancelButton);
+
         gbc.gridx = 0;
+        gbc.gridy++;
         gbc.gridwidth = 2;
         add(buttonPanel, gbc);
 
-        setSize(400, 350);  // Adjust the dialog size for better fit
+        setSize(400, 300);
         setLocationRelativeTo(parent);
         setVisible(true);
     }
 
-    // Method to handle saving or updating the customer
     private void saveCustomer() {
-        String firstName = firstNameField.getText();
-        String lastName = lastNameField.getText();
-        String email = emailField.getText();
-        String password = new String(passwordField.getPassword());
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String phone = phoneNumberField.getText().trim();
 
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields.");
             return;
         }
 
-        // Role ID is hardcoded as 2 for "Customer"
-        int roleId = 1;  // "Customer" role is assumed to have role_id = 2
-        String roleName = "Customer";  // Default role name
+        int roleId = 1;
+        String roleName = "Customer";
 
-        // Create a new customer object
         Customer newCustomer = new Customer(
-                isEditMode ? currentCustomer.getUserId() : 0,  // If in edit mode, use the current customer ID
-                firstName, lastName, email, password, roleId, roleName
-        );
+           isEditMode ? currentCustomer.getUserId() : 0,
+           firstName, lastName, phone, roleId, roleName
+       );
+
 
         boolean success;
         CustomerDAO customerDAO = new CustomerDAO();
 
-        // Check if we are in add mode or edit mode
         if (isEditMode) {
-            success = customerDAO.updateCustomer(newCustomer);  // Update existing customer
+            success = customerDAO.updateCustomer(newCustomer);
         } else {
-            success = customerDAO.addCustomer(newCustomer);  // Add new customer
+            success = customerDAO.addCustomer(newCustomer);
         }
 
         if (success) {
             JOptionPane.showMessageDialog(this, isEditMode ? "Customer updated successfully." : "Customer added successfully.");
-            dispose();  // Close the dialog
+            dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Error saving customer.");
         }
     }
-    
-    // Method to style buttons with custom background color, font, and text color
+
     private void styleButton(JButton button) {
-        button.setBackground(new Color(8, 103, 147)); // Set background color of button
-        button.setForeground(Color.WHITE); // Set text color to white
-        button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font
-        button.setPreferredSize(new Dimension(135, 35));  // Set button size
+        button.setBackground(new Color(8, 103, 147));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        button.setPreferredSize(new Dimension(135, 35));
     }
 }

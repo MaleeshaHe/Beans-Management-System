@@ -13,123 +13,103 @@ public class ManageCustomers extends JPanel {
     private JTable customersTable;
     private DefaultTableModel tableModel;
     private JButton addButton, editButton, deleteButton;
-    private CustomerDAO customerDAO;  // Use CustomerDAO
+    private CustomerDAO customerDAO;
 
     public ManageCustomers() {
         setLayout(new BorderLayout());
-        setBackground(Color.WHITE);  // Set panel background color
-        customerDAO = new CustomerDAO();  // Initialize CustomerDAO
+        setBackground(Color.WHITE);
+        customerDAO = new CustomerDAO();
 
-        // Create table model and JTable for displaying customers
+        // Updated column headers
         String[] columnNames = {"Customer ID", "First Name", "Last Name", "Phone Number", "Role"};
         tableModel = new DefaultTableModel(columnNames, 0);
         customersTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(customersTable);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Customize JTable appearance
-        customersTable.setBackground(Color.WHITE); // Set background to white
-        customersTable.setFont(new Font("Segoe UI", Font.PLAIN, 12)); // Set font to Segoe UI, 12pt
-        customersTable.setRowHeight(30); // Set row height for better readability
+        // JTable appearance
+        customersTable.setBackground(Color.WHITE);
+        customersTable.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        customersTable.setRowHeight(30);
+        customersTable.getTableHeader().setBackground(new Color(8, 103, 147));
+        customersTable.getTableHeader().setForeground(Color.WHITE);
+        customersTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
 
-        // Set the header background and font color
-        customersTable.getTableHeader().setBackground(new Color(8, 103, 147)); // Set header background color
-        customersTable.getTableHeader().setForeground(Color.WHITE); // Set header text color
-        customersTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set header font
-
-        // Create and add header label before the table
+        // Header label
         JLabel headerLabel = new JLabel("Customer Management", JLabel.CENTER);
         headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        headerLabel.setForeground(new Color(8, 103, 147));  // Set header text color
-        headerLabel.setPreferredSize(new Dimension(600, 40));  // Set height for header
-        add(headerLabel, BorderLayout.NORTH);  // Add the header label to the north of the panel
+        headerLabel.setForeground(new Color(8, 103, 147));
+        headerLabel.setPreferredSize(new Dimension(600, 40));
+        add(headerLabel, BorderLayout.NORTH);
 
-        // Create button panel for Add, Edit, and Delete buttons
+        // Button panel
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
-        buttonPanel.setBackground(Color.WHITE);  // Set background to white
+        buttonPanel.setBackground(Color.WHITE);
 
-        // Add Customer Button
         addButton = new JButton("Add Customer");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addCustomer();
-            }
-        });
-        styleButton(addButton);  // Apply style to button
+        addButton.addActionListener(e -> addCustomer());
+        styleButton(addButton);
         buttonPanel.add(addButton);
 
-        // Edit Customer Button
         editButton = new JButton("Edit Customer");
-        editButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editCustomer();
-            }
-        });
-        styleButton(editButton);  // Apply style to button
+        editButton.addActionListener(e -> editCustomer());
+        styleButton(editButton);
         buttonPanel.add(editButton);
 
-        // Delete Customer Button (Soft Delete)
         deleteButton = new JButton("Delete Customer");
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteCustomer();
-            }
-        });
-        styleButton(deleteButton);  // Apply style to button
+        deleteButton.addActionListener(e -> deleteCustomer());
+        styleButton(deleteButton);
         buttonPanel.add(deleteButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Load customer data
         loadCustomerData();
     }
 
-    // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {
-        button.setBackground(new Color(8, 103, 147)); // Set the background color of the button
-        button.setForeground(Color.WHITE); // Set the text color to white
-        button.setFont(new Font("Segoe UI", Font.BOLD, 12)); // Set font to Segoe UI, 12 pt, Bold
+        button.setBackground(new Color(8, 103, 147));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
     }
 
-    // Load customer data from the database
     private void loadCustomerData() {
-        List<Customer> customers = customerDAO.getAllCustomers();  // Fetch data from DAO
-        tableModel.setRowCount(0);  // Clear any existing rows
+        List<Customer> customers = customerDAO.getAllCustomers();
+        tableModel.setRowCount(0);
 
         for (Customer customer : customers) {
-            tableModel.addRow(new Object[]{customer.getUserId(), customer.getFirstName(), customer.getLastName(), customer.getEmail(), customer.getRoleName()});
+            tableModel.addRow(new Object[]{
+                customer.getUserId(),
+                customer.getFirstName(),
+                customer.getLastName(),
+                customer.getPhoneNumber(),
+                customer.getRoleName()
+            });
         }
     }
 
-    // Add new customer
     private void addCustomer() {
         new CustomerInputDialog((JFrame) SwingUtilities.getWindowAncestor(this), false, null);
-        loadCustomerData(); // Refresh the table
+        loadCustomerData();
     }
 
-    // Edit selected customer
     private void editCustomer() {
         int selectedRow = customersTable.getSelectedRow();
         if (selectedRow != -1) {
             int userId = (int) tableModel.getValueAt(selectedRow, 0);
             String firstName = (String) tableModel.getValueAt(selectedRow, 1);
             String lastName = (String) tableModel.getValueAt(selectedRow, 2);
-            String email = (String) tableModel.getValueAt(selectedRow, 3);
+            String phoneNumber = (String) tableModel.getValueAt(selectedRow, 3);
             String role = (String) tableModel.getValueAt(selectedRow, 4);
 
-            Customer customerToEdit = new Customer(userId, firstName, lastName, email, null, 0, role);
+            Customer customerToEdit = new Customer(userId, firstName, lastName, phoneNumber, 0, role);
             new CustomerInputDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, customerToEdit);
-            loadCustomerData(); // Refresh the table
+            loadCustomerData();
         } else {
             JOptionPane.showMessageDialog(this, "Please select a customer to edit.");
         }
     }
 
-    // Soft delete selected customer
     private void deleteCustomer() {
         int selectedRow = customersTable.getSelectedRow();
         if (selectedRow != -1) {
@@ -137,7 +117,7 @@ public class ManageCustomers extends JPanel {
             boolean isDeleted = customerDAO.softDeleteCustomer(userId);
             if (isDeleted) {
                 JOptionPane.showMessageDialog(this, "Customer marked as deleted successfully.");
-                loadCustomerData(); // Refresh the table
+                loadCustomerData();
             } else {
                 JOptionPane.showMessageDialog(this, "Error deleting customer.");
             }

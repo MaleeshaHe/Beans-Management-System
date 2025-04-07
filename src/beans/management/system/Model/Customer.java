@@ -20,6 +20,10 @@ public class Customer {
         this.roleName = roleName;
     }
 
+    public Customer(int i, String select_Customer, String string, String string0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public int getUserId() {
         return userId;
     }

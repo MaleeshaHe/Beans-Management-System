@@ -21,6 +21,10 @@ public class Promotion {
         this.discountPercentage = discountPercentage;
     }
 
+    public Promotion(int i, String select_Promotion, Object object, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public int getPromotionId() {
         return promotionId;
     }

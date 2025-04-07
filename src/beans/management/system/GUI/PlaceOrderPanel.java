@@ -74,14 +74,6 @@ public class PlaceOrderPanel extends JPanel {
         itemsHeader.setForeground(new Color(8, 103, 147));
         itemsHeader.setPreferredSize(new Dimension(600, 40));
         leftPanel.add(itemsHeader, BorderLayout.NORTH);
-
-//        String[] itemColumns = {"Item Name", "Price (SAR)", "Description", "Quantity"};
-//        itemsTableModel = new DefaultTableModel(itemColumns, 0) {
-//            @Override
-//            public boolean isCellEditable(int row, int column) {
-//                return column == 3; // Only allow editing quantity
-//            }
-//        };
         
         String[] itemColumns = {"Item Name", "Price (SAR)", "Description", "Available Quantity", "Quantity"};
         itemsTableModel = new DefaultTableModel(itemColumns, 0) {
@@ -135,7 +127,7 @@ public class PlaceOrderPanel extends JPanel {
         customersDropdown = new JComboBox<>();
         loadCustomers();
         rightTopPanel.add(customersDropdown);
-        
+
         // Promotion Dropdown
         rightTopPanel.add(new JLabel("Select Promotion:"));
         promotionsDropdown = new JComboBox<>();

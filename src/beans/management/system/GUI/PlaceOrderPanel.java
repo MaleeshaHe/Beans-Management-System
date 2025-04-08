@@ -158,8 +158,8 @@ public class PlaceOrderPanel extends JPanel {
 
 
         // Total Labels
-        rightTopPanel.add(new JLabel("Total Amount (SAR):"));
-        totalLabel = new JLabel("SAR 0.00");
+        rightTopPanel.add(new JLabel(""));
+        totalLabel = new JLabel("Total Amount (SAR) : SAR 0.00");
         rightTopPanel.add(totalLabel);
         
         // Add Customer Button
@@ -405,7 +405,7 @@ public class PlaceOrderPanel extends JPanel {
             totalAmount -= discountAmount;
         }
 
-        totalLabel.setText("SAR " + String.format("%.2f", totalAmount));
+        totalLabel.setText("Total Amount (SAR) : " + String.format("%.2f", totalAmount));
         discountLabel.setText("SAR " + String.format("%.2f", discountAmount));
         finalTotalLabel.setText("SAR " + String.format("%.2f", totalAmount));
         this.totalAmount = totalAmount;

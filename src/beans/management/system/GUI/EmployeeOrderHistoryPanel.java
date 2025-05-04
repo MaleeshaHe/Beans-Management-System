@@ -34,13 +34,13 @@ public class EmployeeOrderHistoryPanel extends JPanel {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (row % 2 == 0) {
-                    c.setBackground(new Color(245, 245, 245)); // Light grey for even rows
+                    //c.setBackground(new Color(245, 245, 245)); // Light grey for even rows
                 } else {
-                    c.setBackground(Color.WHITE); // White for odd rows
+                    //c.setBackground(Color.WHITE); // White for odd rows
                 }
                 if (isSelected) {
-                    c.setBackground(new Color(8, 103, 147)); // Dark background for selected rows
-                    c.setForeground(Color.WHITE); // White text for selected rows
+                    //c.setBackground(new Color(8, 103, 147)); // Dark background for selected rows
+                    //c.setForeground(Color.WHITE); // White text for selected rows
                 }
                 return c;
             }

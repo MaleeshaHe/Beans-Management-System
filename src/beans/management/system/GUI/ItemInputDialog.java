@@ -110,44 +110,66 @@ public class ItemInputDialog extends JDialog {
 
     // Method to handle saving or updating the item
     private void saveItem() {
-        String itemName = itemNameField.getText();
-        double price;
-        String description = descriptionField.getText();
+        String itemName = itemNameField.getText().trim();
+        String priceText = priceField.getText().trim();
+        String description = descriptionField.getText().trim();
         Category selectedCategory = (Category) categoryDropdown.getSelectedItem();
 
+        // Validate Item Name: only letters/spaces and at least 3 characters
+        if (itemName.length() < 3 || !itemName.matches("[a-zA-Z ]+")) {
+            JOptionPane.showMessageDialog(this, "Item name must be at least 3 characters and contain only letters and spaces.");
+            return;
+        }
+
+        // Validate Price
+        double price;
         try {
-            price = Double.parseDouble(priceField.getText());
+            price = Double.parseDouble(priceText);
+            if (price <= 0) {
+                JOptionPane.showMessageDialog(this, "Price must be a number greater than 0.");
+                return;
+            }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid price.");
+            JOptionPane.showMessageDialog(this, "Please enter a valid numeric price.");
             return;
         }
 
-        if (itemName.isEmpty() || description.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+        // Validate Description
+        if (description.isEmpty() || description.length() < 5) {
+            JOptionPane.showMessageDialog(this, "Description must be at least 5 characters long.");
             return;
         }
 
-        // Create an Item object, set the ID for the update (if in edit mode)
-        Item newItem = new Item(isEditMode ? currentItem.getItemId() : 0, itemName, price, description, selectedCategory.getCategoryId());
+        // Validate Category
+        if (selectedCategory == null) {
+            JOptionPane.showMessageDialog(this, "Please select a category.");
+            return;
+        }
 
-        // Ensure data is being passed correctly
-        System.out.println("Saving Item: " + newItem.getItemName() + ", ID: " + newItem.getItemId());
+        // Create the item object
+        Item newItem = new Item(
+            isEditMode ? currentItem.getItemId() : 0,
+            itemName,
+            price,
+            description,
+            selectedCategory.getCategoryId()
+        );
 
         boolean success;
-
         if (isEditMode) {
-            success = itemDAO.updateItem(newItem);  // Update existing item
+            success = itemDAO.updateItem(newItem);
         } else {
-            success = itemDAO.addItem(newItem);  // Add new item
+            success = itemDAO.addItem(newItem);
         }
 
         if (success) {
             JOptionPane.showMessageDialog(this, isEditMode ? "Item updated successfully." : "Item added successfully.");
-            dispose();  // Close the dialog
+            dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Error saving item.");
         }
     }
+
 
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {

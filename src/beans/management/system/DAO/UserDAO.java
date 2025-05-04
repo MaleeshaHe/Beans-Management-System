@@ -159,5 +159,19 @@ public class UserDAO {
         return false;
     }
     
+    public boolean emailExists(String email) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM user WHERE email = ?")) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     
 }

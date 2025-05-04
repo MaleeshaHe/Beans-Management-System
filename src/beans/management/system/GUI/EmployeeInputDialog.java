@@ -103,16 +103,56 @@ public class EmployeeInputDialog extends JDialog {
 
     // Method to handle saving or updating the employee
     private void saveEmployee() {
-        String firstName = firstNameField.getText();
-        String lastName = lastNameField.getText();
-        String email = emailField.getText();
-        String password = new String(passwordField.getPassword());
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String email = emailField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
 
+        // Check if any field is empty
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields.");
             return;
         }
 
+        // Validate first name length
+        if (firstName.length() < 3) {
+            JOptionPane.showMessageDialog(this, "First name must be at least 3 characters.");
+            return;
+        }
+
+        // Validate last name length
+        if (lastName.length() < 3) {
+            JOptionPane.showMessageDialog(this, "Last name must be at least 3 characters.");
+            return;
+        }
+
+        // Validate email format
+        if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,6}$")) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid email address.");
+            return;
+        }
+
+        // Validate password length
+        if (password.length() < 6) {
+            JOptionPane.showMessageDialog(this, "Password must be at least 6 characters.");
+            return;
+        }
+        
+        UserDAO userDAO = new UserDAO();
+
+        // Check if email already exists
+        if (!isEditMode && userDAO.emailExists(email)) {
+            JOptionPane.showMessageDialog(this, "An account with this email already exists.");
+            return;
+        }
+
+        // In edit mode, only block if the new email is different and already taken
+        if (isEditMode && !email.equalsIgnoreCase(currentUser.getEmail()) && userDAO.emailExists(email)) {
+            JOptionPane.showMessageDialog(this, "This email is already used by another employee.");
+            return;
+        }
+
+        // Create user and save
         User newUser = new User(isEditMode ? currentUser.getUserId() : 0, firstName, lastName, email, "Employee", password);
         boolean success;
 
@@ -129,6 +169,7 @@ public class EmployeeInputDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Error saving employee.");
         }
     }
+
 
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {

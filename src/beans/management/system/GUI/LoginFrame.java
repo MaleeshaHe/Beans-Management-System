@@ -31,28 +31,38 @@ public class LoginFrame extends javax.swing.JFrame {
     
         // Action to perform login
     private void loginAction() {
-        String email = emailField.getText();
-        String password = new String(passwordField.getPassword());
+          String email = emailField.getText().trim();
+          String password = new String(passwordField.getPassword()).trim();
 
-        // Simulate login (use UserService for actual database authentication)
-        UserService userService = new UserService();
-        User user = userService.login(email, password);
+          // Check for missing fields individually
+          if (email.isEmpty()) {
+              JOptionPane.showMessageDialog(this, "Email field is required.", "Missing Email", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
 
-        if (user != null) {
-            
-            // Store user session
-            SessionManager.setCurrentUser(user);
+          if (password.isEmpty()) {
+              JOptionPane.showMessageDialog(this, "Password field is required.", "Missing Password", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
 
-            if (user.getRole().equals("Manager")) {
-                new ManagerDashboardFrame().setVisible(true); // Open Manager Dashboard
-            } else if (user.getRole().equals("Employee")) {
-                new EmployeeDashboardFrame().setVisible(true); // Open Employee Dashboard
-            }
-            this.setVisible(false); // Close the login screen
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid credentials!", "Login Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+          // Proceed with login
+          UserService userService = new UserService();
+          User user = userService.login(email, password);
+
+          if (user != null) {
+              SessionManager.setCurrentUser(user);
+
+              if (user.getRole().equals("Manager")) {
+                  new ManagerDashboardFrame().setVisible(true);
+              } else if (user.getRole().equals("Employee")) {
+                  new EmployeeDashboardFrame().setVisible(true);
+              }
+              this.setVisible(false);
+          } else {
+              JOptionPane.showMessageDialog(this, "Invalid credentials!", "Login Error", JOptionPane.ERROR_MESSAGE);
+          }
+      }
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

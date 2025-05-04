@@ -5,6 +5,9 @@ import beans.management.system.Model.Promotion;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 
 public class PromotionInputDialog extends JDialog {
 
@@ -119,39 +122,54 @@ public class PromotionInputDialog extends JDialog {
 
     // Method to handle saving or updating the promotion
     private void savePromotion() {
-        String promoCode = promoCodeField.getText();
-        String startDate = startDateField.getText();
-        String endDate = endDateField.getText();
-        String description = descriptionArea.getText();
+        String promoCode = promoCodeField.getText().trim();
+        String startDateStr = startDateField.getText().trim();
+        String endDateStr = endDateField.getText().trim();
+        String description = descriptionArea.getText().trim();
         double discountPercentage;
 
+        // Check for empty fields first
+        if (promoCode.isEmpty() || startDateStr.isEmpty() || endDateStr.isEmpty() || description.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+            return;
+        }
+
+        // Validate discount
         try {
-            discountPercentage = Double.parseDouble(discountField.getText());
+            discountPercentage = Double.parseDouble(discountField.getText().trim());
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Please enter a valid discount percentage.");
             return;
         }
 
-        if (promoCode.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || description.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+        // Validate date format and logic
+        LocalDate startDate, endDate;
+        try {
+            startDate = LocalDate.parse(startDateStr);
+            endDate = LocalDate.parse(endDateStr);
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Please enter dates in yyyy-mm-dd format.");
             return;
         }
 
+        if (startDate.isAfter(endDate)) {
+            JOptionPane.showMessageDialog(this, "Start date cannot be after end date.");
+            return;
+        }
+
+        // Create and save promotion
         Promotion newPromotion = new Promotion(
                 isEditMode ? currentPromotion.getPromotionId() : 0,
                 promoCode,
-                startDate,
-                endDate,
+                startDateStr,
+                endDateStr,
                 description,
                 discountPercentage
         );
 
-        boolean success;
-        if (isEditMode) {
-            success = new PromotionDAO().updatePromotion(newPromotion);  // Update existing promotion
-        } else {
-            success = new PromotionDAO().addPromotion(newPromotion);  // Add new promotion
-        }
+        boolean success = isEditMode
+                ? new PromotionDAO().updatePromotion(newPromotion)
+                : new PromotionDAO().addPromotion(newPromotion);
 
         if (success) {
             JOptionPane.showMessageDialog(this, isEditMode ? "Promotion updated successfully." : "Promotion added successfully.");
@@ -160,6 +178,7 @@ public class PromotionInputDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Error saving promotion.");
         }
     }
+
 
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {

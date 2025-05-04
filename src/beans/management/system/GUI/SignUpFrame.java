@@ -4,6 +4,8 @@
  */
 package beans.management.system.GUI;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author malee
@@ -235,6 +237,18 @@ public class SignUpFrame extends javax.swing.JFrame {
 
         if (lastName.length() < 3) {
             javax.swing.JOptionPane.showMessageDialog(this, "Last name must be at least 3 characters long.");
+            return;
+        }
+        
+            // Validate first name (only letters allowed)
+        if (!firstName.matches("[a-zA-Z]+")) {
+            JOptionPane.showMessageDialog(this, "First name must contain only letters.");
+            return;
+        }
+
+        // Validate last name (only letters allowed)
+        if (!lastName.matches("[a-zA-Z]+")) {
+            JOptionPane.showMessageDialog(this, "Last name must contain only letters.");
             return;
         }
 

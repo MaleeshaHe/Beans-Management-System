@@ -85,6 +85,24 @@ public class CustomerInputDialog extends JDialog {
         String lastName = lastNameField.getText().trim();
         String phone = phoneNumberField.getText().trim();
 
+        // Validate first name: only letters and at least 3 characters
+        if (!firstName.matches("[a-zA-Z]+") || firstName.length() < 3) {
+            JOptionPane.showMessageDialog(this, "First name must contain only letters and be at least 3 characters long.");
+            return;
+        }
+
+        // Validate last name: only letters and at least 3 characters
+        if (!lastName.matches("[a-zA-Z]+") || lastName.length() < 3) {
+            JOptionPane.showMessageDialog(this, "Last name must contain only letters and be at least 3 characters long.");
+            return;
+        }
+
+        // Validate phone number (must contain only numbers and a plus sign)
+        if (!phone.matches("^[+]?[0-9]*$")) {
+            JOptionPane.showMessageDialog(this, "Phone number must contain only numbers and optionally start with a plus sign.");
+            return;
+        }
+
         if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields.");
             return;
@@ -94,10 +112,9 @@ public class CustomerInputDialog extends JDialog {
         String roleName = "Customer";
 
         Customer newCustomer = new Customer(
-           isEditMode ? currentCustomer.getUserId() : 0,
-           firstName, lastName, phone, roleId, roleName
-       );
-
+            isEditMode ? currentCustomer.getUserId() : 0,
+            firstName, lastName, phone, roleId, roleName
+        );
 
         boolean success;
         CustomerDAO customerDAO = new CustomerDAO();
@@ -115,6 +132,7 @@ public class CustomerInputDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Error saving customer.");
         }
     }
+
 
     private void styleButton(JButton button) {
         button.setBackground(new Color(8, 103, 147));

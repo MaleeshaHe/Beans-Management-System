@@ -141,6 +141,11 @@ public class PromotionInputDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Please enter a valid discount percentage.");
             return;
         }
+        
+        if (discountPercentage <= 0 || discountPercentage > 100) {
+            JOptionPane.showMessageDialog(this, "Discount must be greater than 0 and not exceed 100%.");
+            return;
+        }
 
         // Validate date format and logic
         LocalDate startDate, endDate;

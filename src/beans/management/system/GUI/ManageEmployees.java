@@ -135,20 +135,32 @@ public class ManageEmployees extends JPanel {
 
     // Soft Delete selected employee (mark as deleted)
     private void deleteEmployee() {
-        int selectedRow = employeesTable.getSelectedRow();
-        if (selectedRow != -1) {
-            int empId = (int) tableModel.getValueAt(selectedRow, 0);
-            boolean isDeleted = userDAO.softDeleteEmployee(empId);
-            if (isDeleted) {
-                JOptionPane.showMessageDialog(this, "Employee marked as deleted successfully.");
-                loadEmployeeData();  // Refresh the employee list
+            int selectedRow = employeesTable.getSelectedRow();
+            if (selectedRow != -1) {
+                int empId = (int) tableModel.getValueAt(selectedRow, 0);
+
+                int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Do you want to delete the employee with ID \"" + empId + "\"?",
+                    "Confirm Deletion",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+                );
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    boolean isDeleted = userDAO.softDeleteEmployee(empId);
+                    if (isDeleted) {
+                        JOptionPane.showMessageDialog(this, "Employee marked as deleted successfully.");
+                        loadEmployeeData();  // Refresh the employee list
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error deleting employee.");
+                    }
+                }
             } else {
-                JOptionPane.showMessageDialog(this, "Error deleting employee.");
+                JOptionPane.showMessageDialog(this, "Please select an employee to delete.");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Please select an employee to delete.");
         }
-    }
+
 
     // Method to style buttons with custom background color, font, and text color
     private void styleButton(JButton button) {

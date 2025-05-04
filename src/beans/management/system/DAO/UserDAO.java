@@ -172,6 +172,34 @@ public class UserDAO {
         }
         return false;
     }
+    
+    public User getUserById(int userId) {
+    User user = null;
+    String query = "SELECT user_id, first_name, last_name, email, role_id FROM user WHERE user_id = ? AND is_deleted = 0";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("user_id");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String email = rs.getString("email");
+                String role = rs.getString("role_id");
+
+                user = new User(id, firstName, lastName, email, role, null); // Set password to null if not needed
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Or use logging
+        }
+
+        return user;
+    }
+
 
     
 }

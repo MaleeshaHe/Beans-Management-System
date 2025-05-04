@@ -120,20 +120,16 @@ public class ManageEmployees extends JPanel {
     // Edit selected employee (using the database to persist changes)
     private void editEmployee() {
         int selectedRow = employeesTable.getSelectedRow();
-        if (selectedRow != -1) {
-            int empId = (int) tableModel.getValueAt(selectedRow, 0);
-            String firstName = (String) tableModel.getValueAt(selectedRow, 1);
-            String lastName = (String) tableModel.getValueAt(selectedRow, 2);
-            String email = (String) tableModel.getValueAt(selectedRow, 3);
-            String role = (String) tableModel.getValueAt(selectedRow, 4);
+        int empId = (int) tableModel.getValueAt(selectedRow, 0);
 
-            // Create a User object for editing
-            User userToEdit = new User(empId, firstName, lastName, email, role, null);
-            // Open EmployeeInputDialog in Edit mode
+        // Get the full user object from the database
+        User userToEdit = userDAO.getUserById(empId);
+
+        if (userToEdit != null) {
             new EmployeeInputDialog((JFrame) SwingUtilities.getWindowAncestor(this), true, userToEdit);
             loadEmployeeData();  // Refresh the employee list
         } else {
-            JOptionPane.showMessageDialog(this, "Please select an employee to edit.");
+            JOptionPane.showMessageDialog(this, "Could not find user details.");
         }
     }
 

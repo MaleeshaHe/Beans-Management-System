@@ -221,26 +221,47 @@ public class SignUpFrame extends javax.swing.JFrame {
             return;
         }
 
-        // Validate form
+        // Basic empty check
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Please fill all fields.");
             return;
         }
 
+        // First name and last name length check
+        if (firstName.length() < 3) {
+            javax.swing.JOptionPane.showMessageDialog(this, "First name must be at least 3 characters long.");
+            return;
+        }
+
+        if (lastName.length() < 3) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Last name must be at least 3 characters long.");
+            return;
+        }
+
+        // Email validation using regex
+        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please enter a valid email address.");
+            return;
+        }
+
+        // Password length check
+        if (password.length() < 6) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Password must be at least 6 characters long.");
+            return;
+        }
+
         beans.management.system.DAO.UserDAO userDAO = new beans.management.system.DAO.UserDAO();
 
-        // Check if email already exists
         if (userDAO.isEmailExists(email)) {
             javax.swing.JOptionPane.showMessageDialog(this, "Email is already registered. Try logging in.");
             return;
         }
 
-        // Create user object
         beans.management.system.Model.User user = new beans.management.system.Model.User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setPassword(password); // Consider hashing before saving
+        user.setPassword(password); // You may hash this before saving
 
         boolean success = userDAO.signUpUser(user, roleName);
 
